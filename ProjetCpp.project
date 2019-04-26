@@ -2,6 +2,17 @@
 <CodeLite_Project Name="ProjetCpp" Version="10.0.0" InternalType="Console">
   <Description/>
   <Dependencies/>
+  <VirtualDirectory Name="src">
+    <File Name="src/main.cpp"/>
+    <File Name="src/CCalculMatriciel.cpp" ExcludeProjConfig="Debug"/>
+    <File Name="src/CMatrice.cpp" ExcludeProjConfig="Debug"/>
+    <File Name="src/CParser.cpp" ExcludeProjConfig=""/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="header">
+    <File Name="header/CMatrice.h"/>
+    <File Name="header/CCalculMatriciel.h"/>
+    <File Name="header/CParser.h"/>
+  </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="" Assembler="">
@@ -12,7 +23,7 @@
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
-    <Configuration Name="Debug" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
       </Compiler>
@@ -92,15 +103,4 @@
       </Completion>
     </Configuration>
   </Settings>
-  <VirtualDirectory Name="src">
-    <File Name="src/main.cpp"/>
-    <File Name="src/CCalculMatriciel.cpp"/>
-    <File Name="src/CMatrice.cpp"/>
-    <File Name="src/CParser.cpp"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="header">
-    <File Name="header/CMatrice.h"/>
-    <File Name="header/CCalculMatriciel.h"/>
-    <File Name="header/CParser.h"/>
-  </VirtualDirectory>
 </CodeLite_Project>

@@ -1,0 +1,26 @@
+----- Commentaires -----
+
+Englober des catégories : 
+- début : 	/************* TEST *************/ 
+- fin :		/********************************/
+
+Commentaire dans une fonction : 	// commentaire
+
+----- Boucles -----
+
+Lignes : 	uiBoucleL
+Colonnes : 	uiBoucleC
+
+----- Fonctions de patrons (CMatrice) -----
+
+Déclaration :
+
+	[type] [nom_fonction]([paramètres...]);
+
+Définition :
+
+	template <class MType> 
+	[type_retour] CMatrice<MType>::[nom_fonction]()
+	{
+		...
+	}
