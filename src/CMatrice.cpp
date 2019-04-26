@@ -169,5 +169,38 @@ CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 	
 	return *MATNouveau;
 }
+
+template <class MType>
+CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
+{
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(*this);
+	
+	// Recopie des valeurs
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	{
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		{
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC)/dNombre);
+		}
+	}
+	
+	return *MATNouveau;
+}
+
+template <class MType>
+CMatrice<MType>& CMatrice<MType>::MATTransposer()
+{
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(uiNbLignes, uiNbColonnes);
+
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	{
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		{
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, this->MATLireElement(uiBoucleC, uiBoucleL));
+		}
+	}
+	
+	return *MATNouveau;
+}
 /*******************************/
 

@@ -1,3 +1,6 @@
+#ifndef CMATRICE
+#define CMATRICE
+
 template <class MType> class CMatrice {
 
 	private :
@@ -28,9 +31,7 @@ template <class MType> class CMatrice {
 		void MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement);
 
 		// Méthodes et surcharges d'opérateurs
-		
 		CMatrice<MType>& operator=(CMatrice<MType>& MATMatrice);
-
 		CMatrice<MType>& operator*(double dNombre);
 		CMatrice<MType>& operator/(double dNombre);
 		
@@ -41,4 +42,4 @@ template <class MType> class CMatrice {
 
 #include "src/CMatrice.cpp"
 
-
+#endif
