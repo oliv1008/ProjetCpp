@@ -1,5 +1,5 @@
-#include <iostream>
-#include <cstdlib>
+#ifndef CMATRICECPP
+#define CMATRICECPP
 
 using namespace std;
 
@@ -61,9 +61,9 @@ CMatrice<MType>::CMatrice(CMatrice<MType>& MATCopie)
 
 /** Constructeur depuis un fichier **/
 template <class MType> 
-CMatrice<MType>::CMatrice(char *pcChemin)
+CMatrice<MType>::CMatrice(const char *pcChemin)
 {
-	// Mystère et boule de gomme
+	CParser::PARParserMatrice(pcChemin, *this);
 }
 
 /********************************/
@@ -105,6 +105,16 @@ template <class MType>
 void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement)
 {
 	pMTPMatrice[uiIndiceLigne][uiIndiceColonne] = MTPElement;
+}
+
+template <class MType>
+void CMatrice<MType>::MATModifierMatrice(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne)
+{	
+	pMTPMatrice = (MType**)malloc(sizeof(MType*) * uiIndiceLigne);
+	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+	{
+		pMTPMatrice[uiBoucle] = (MType*)malloc(sizeof(MType) * uiIndiceColonne);
+	}
 }
 
 /*******************************/ 
@@ -273,3 +283,4 @@ CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType> MATB)
 	return *MATNouveau;
 }
 
+#endif

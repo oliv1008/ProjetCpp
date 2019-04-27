@@ -16,7 +16,7 @@ template <class MType> class CMatrice
 		CMatrice();
 		CMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes);
 		CMatrice(CMatrice<MType>& MATCopie);
-		CMatrice(char *pcChemin);
+		CMatrice(const char *pcChemin);
 
 		// Destructeur
 		//~CMatrice();
@@ -30,6 +30,7 @@ template <class MType> class CMatrice
 		
 		MType MATLireElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne);
 		void MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement);
+		void MATModifierMatrice(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne);
 
 		// Méthodes et surcharges d'opérateurs
 		CMatrice<MType>& operator=(CMatrice<MType>& MATMatrice);
@@ -46,6 +47,7 @@ template <class MType> class CMatrice
 		CMatrice<MType>& operator*(CMatrice<MType> MATB);
 };
 
+#include <header/CParser.h>
 #include "src/CMatrice.cpp"
 
 #endif
