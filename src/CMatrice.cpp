@@ -1,6 +1,10 @@
 #ifndef CMATRICECPP
 #define CMATRICECPP
 
+#include <iostream>
+#include <cstdlib>
+#include "header/CCalculMatriciel.h"
+
 using namespace std;
 
 /********* CONSTRUCTEURS *********/
@@ -215,72 +219,24 @@ CMatrice<MType>& CMatrice<MType>::MATTransposer()
 	
 	return *MATNouveau;
 }
-/*******************************/
 
-/************ TESTS *****************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator+(CMatrice<MType> MATB)
 {
-	// Allocation d'une nouvelle matrice
-	CMatrice<MType> *MATNouveau = new CMatrice<MType>(this->MATLireNbLignes(), this->MATLireNbColonnes());
-	
-	// Calcul des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < MATNouveau->MATLireNbLignes(); uiBoucleL++)
-	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
-		{
-			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, this->MATLireElement(uiBoucleL, uiBoucleC) + MATB.MATLireElement(uiBoucleL, uiBoucleC));
-		}
-	}
-	
-	return *MATNouveau;
+	return CCalculMatriciel<MType>::CMAAddition(*this, MATB);
 }
 
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator-(CMatrice<MType> MATB)
 {
-	// Allocation d'une nouvelle matrice
-	CMatrice<MType> *MATNouveau = new CMatrice<MType>(this->MATLireNbLignes(), this->MATLireNbColonnes());
-	
-	// Calcul des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < MATNouveau->MATLireNbLignes(); uiBoucleL++)
-	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
-		{
-			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, this->MATLireElement(uiBoucleL, uiBoucleC) - MATB.MATLireElement(uiBoucleL, uiBoucleC));
-		}
-	}
-	
-	return *MATNouveau;
+	return CCalculMatriciel<MType>::CMASoustraction(*this, MATB);
 }
 
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType> MATB)
 {
-	if(MATB.MATLireNbLignes() != this->MATLireNbColonnes())
-	{
-		cout << "grosse erreur mamène" << endl;
-		exit(0);	// erreur si taille de B incorrecte
-	}
-	
-	// Allocation d'une nouvelle matrice (Taille = Lignes de A * Colonnes de B)
-	CMatrice<MType> *MATNouveau = new CMatrice<MType>(this->MATLireNbLignes(), MATB.MATLireNbColonnes());
-	
-	// Calcul des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < MATNouveau->MATLireNbLignes(); uiBoucleL++)
-	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
-		{
-			for(unsigned int uiBoucleK = 0; uiBoucleK < this->MATLireNbColonnes(); uiBoucleK++)
-			{
-				MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC) +
-				this->MATLireElement(uiBoucleL, uiBoucleK) * MATB.MATLireElement(uiBoucleK, uiBoucleC));
-				// en gros là je fais C(i,j) = C(i,j) + A(i, k) * B(k, j)
-			}
-		}
-	}
-	
-	return *MATNouveau;
+	return CCalculMatriciel<MType>::CMAProduit(*this, MATB);
 }
+/*******************************/
 
 #endif
