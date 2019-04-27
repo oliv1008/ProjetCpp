@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 	copie = copie.MATTransposer();
 	copie.MATAfficher();*/
 	
-	/*CMatrice<int> matA(2, 2);
+	CMatrice<int> matA(2, 2);
 	CMatrice<int> matB(2, 2);
 	CMatrice<int> matC;
 	matA.MATModifierElement(0, 0, 1);
@@ -91,30 +91,28 @@ int main(int argc, char **argv)
 	matC.MATAfficher();
 	cout << "matB * matA = " << endl;
 	matC = matB * matA;
-	matC.MATAfficher();*/
+	matC.MATAfficher();
 	
-	CMatrice<int> matA(1, 2);
-	CMatrice<int> matB(2, 3);
-	CMatrice<int> matC;
-	matA.MATModifierElement(0, 0, 1);
-	matA.MATModifierElement(0, 1, 2);
-	//matA.MATModifierElement(1, 0, 3);
-	//matA.MATModifierElement(1, 1, 4);
+	CMatrice<int> matD(1, 2);
+	CMatrice<int> matE(2, 3);
+	CMatrice<int> matF;
+	matD.MATModifierElement(0, 0, 1);
+	matD.MATModifierElement(0, 1, 2);
 	cout << "A = " << endl;
-	matA.MATAfficher();
+	matD.MATAfficher();
 	
-	matB.MATModifierElement(0, 0, 1);
-	matB.MATModifierElement(0, 1, 2);
-	matB.MATModifierElement(0, 2, 3);
-	matB.MATModifierElement(1, 0, 4);
-	matB.MATModifierElement(1, 1, 5);
-	matB.MATModifierElement(1, 2, 6);
+	matE.MATModifierElement(0, 0, 1);
+	matE.MATModifierElement(0, 1, 2);
+	matE.MATModifierElement(0, 2, 3);
+	matE.MATModifierElement(1, 0, 4);
+	matE.MATModifierElement(1, 1, 5);
+	matE.MATModifierElement(1, 2, 6);
 	cout << "B = " << endl;
-	matB.MATAfficher();
+	matE.MATAfficher();
 	
 	cout << "A * B = " << endl;
-	matC = matA * matB;
-	matC.MATAfficher();
+	matF = matD * matE;
+	matF.MATAfficher();
 	
 	
 	return 0;
