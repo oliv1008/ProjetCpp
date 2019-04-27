@@ -117,7 +117,7 @@ void CMatrice<MType>::MATAfficher()
 {
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbLignes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
 		{
 			cout << pMTPMatrice[uiBoucleL][uiBoucleC] << " ";
 		}
@@ -261,10 +261,11 @@ CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType> MATB)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
 		{
-			for(unsigned int uiBoucleK = 0; uiBoucleK < MATNouveau->MATLireNbColonnes(); uiBoucleK++)
+			for(unsigned int uiBoucleK = 0; uiBoucleK < this->MATLireNbColonnes(); uiBoucleK++)
 			{
 				MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC) +
 				this->MATLireElement(uiBoucleL, uiBoucleK) * MATB.MATLireElement(uiBoucleK, uiBoucleC));
+				// en gros là je fais C(i,j) = C(i,j) + A(i, k) * B(k, j)
 			}
 		}
 	}

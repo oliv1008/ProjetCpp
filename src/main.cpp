@@ -98,12 +98,21 @@ int main(int argc, char **argv)
 	CMatrice<int> matC;
 	matA.MATModifierElement(0, 0, 1);
 	matA.MATModifierElement(0, 1, 2);
+	//matA.MATModifierElement(1, 0, 3);
+	//matA.MATModifierElement(1, 1, 4);
+	cout << "A = " << endl;
+	matA.MATAfficher();
+	
 	matB.MATModifierElement(0, 0, 1);
 	matB.MATModifierElement(0, 1, 2);
 	matB.MATModifierElement(0, 2, 3);
 	matB.MATModifierElement(1, 0, 4);
-	matB.MATModifierElement(2, 1, 5);
-	matB.MATModifierElement(3, 2, 6);
+	matB.MATModifierElement(1, 1, 5);
+	matB.MATModifierElement(1, 2, 6);
+	cout << "B = " << endl;
+	matB.MATAfficher();
+	
+	cout << "A * B = " << endl;
 	matC = matA * matB;
 	matC.MATAfficher();
 	
