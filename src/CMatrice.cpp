@@ -71,7 +71,6 @@ CMatrice<MType>::CMatrice(char *pcChemin)
 
 
 /********** ACCESSEURS **********/ 
-
 template <class MType> 
 unsigned int CMatrice<MType>::MATLireNbLignes()
 {
@@ -156,9 +155,10 @@ CMatrice<MType>& CMatrice<MType>::operator=(CMatrice<MType>& MATMatrice)
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 {
+	// Recopie de la matrice
 	CMatrice<MType> *MATNouveau = new CMatrice<MType>(*this);
 	
-	// Recopie des valeurs
+	// Calcul des valeurs
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
@@ -173,9 +173,10 @@ CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 {
+	// Recopie de la matrice
 	CMatrice<MType> *MATNouveau = new CMatrice<MType>(*this);
 	
-	// Recopie des valeurs
+	// Calcul des valeurs
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
@@ -190,8 +191,10 @@ CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::MATTransposer()
 {
+	// Recopie de la matrice
 	CMatrice<MType> *MATNouveau = new CMatrice<MType>(uiNbLignes, uiNbColonnes);
 
+	// Calcul des valeurs
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
@@ -203,4 +206,69 @@ CMatrice<MType>& CMatrice<MType>::MATTransposer()
 	return *MATNouveau;
 }
 /*******************************/
+
+/************ TESTS *****************/
+template <class MType>
+CMatrice<MType>& CMatrice<MType>::operator+(CMatrice<MType> MATB)
+{
+	// Allocation d'une nouvelle matrice
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(this->MATLireNbLignes(), this->MATLireNbColonnes());
+	
+	// Calcul des valeurs
+	for(unsigned int uiBoucleL = 0; uiBoucleL < MATNouveau->MATLireNbLignes(); uiBoucleL++)
+	{
+		for(unsigned int uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
+		{
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, this->MATLireElement(uiBoucleL, uiBoucleC) + MATB.MATLireElement(uiBoucleL, uiBoucleC));
+		}
+	}
+	
+	return *MATNouveau;
+}
+
+template <class MType>
+CMatrice<MType>& CMatrice<MType>::operator-(CMatrice<MType> MATB)
+{
+	// Allocation d'une nouvelle matrice
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(this->MATLireNbLignes(), this->MATLireNbColonnes());
+	
+	// Calcul des valeurs
+	for(unsigned int uiBoucleL = 0; uiBoucleL < MATNouveau->MATLireNbLignes(); uiBoucleL++)
+	{
+		for(unsigned int uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
+		{
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, this->MATLireElement(uiBoucleL, uiBoucleC) - MATB.MATLireElement(uiBoucleL, uiBoucleC));
+		}
+	}
+	
+	return *MATNouveau;
+}
+
+template <class MType>
+CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType> MATB)
+{
+	if(MATB.MATLireNbLignes() != this->MATLireNbColonnes())
+	{
+		cout << "grosse erreur mamène" << endl;
+		exit(0);	// erreur si taille de B incorrecte
+	}
+	
+	// Allocation d'une nouvelle matrice (Taille = Lignes de A * Colonnes de B)
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(this->MATLireNbLignes(), MATB.MATLireNbColonnes());
+	
+	// Calcul des valeurs
+	for(unsigned int uiBoucleL = 0; uiBoucleL < MATNouveau->MATLireNbLignes(); uiBoucleL++)
+	{
+		for(unsigned int uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
+		{
+			for(unsigned int uiBoucleK = 0; uiBoucleK < MATNouveau->MATLireNbColonnes(); uiBoucleK++)
+			{
+				MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC) +
+				this->MATLireElement(uiBoucleL, uiBoucleK) * MATB.MATLireElement(uiBoucleK, uiBoucleC));
+			}
+		}
+	}
+	
+	return *MATNouveau;
+}
 

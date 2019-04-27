@@ -1,7 +1,8 @@
 #ifndef CMATRICE
 #define CMATRICE
 
-template <class MType> class CMatrice {
+template <class MType> class CMatrice
+{
 
 	private :
 
@@ -38,6 +39,11 @@ template <class MType> class CMatrice {
 		CMatrice<MType>& MATTransposer();
 		
 		void MATAfficher();
+		
+		// A CHOISIR SI ON MET CA ICI OU DANS "CALCUL MATRICIEL"
+		CMatrice<MType>& operator+(CMatrice<MType> MATB);
+		CMatrice<MType>& operator-(CMatrice<MType> MATB);
+		CMatrice<MType>& operator*(CMatrice<MType> MATB);
 };
 
 #include "src/CMatrice.cpp"

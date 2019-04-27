@@ -24,3 +24,7 @@ Définition :
 	{
 		...
 	}
+
+---------------- TO DO ---------------------------
+
+> MàJ UML : constructeur de recopie, opérateurs x et / à la place des méthodes
