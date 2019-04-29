@@ -35,7 +35,7 @@ template <class MType> class CMatrice
 		// Méthodes et surcharges d'opérateurs
 		CMatrice<MType>& operator=(CMatrice<MType>& MATMatrice);
 		CMatrice<MType>& operator*(double dNombre);
-		CMatrice<MType>& operator/(double dNombre);
+		CMatrice<MType> operator/(double dNombre);
 		
 		CMatrice<MType>& MATTransposer();
 		

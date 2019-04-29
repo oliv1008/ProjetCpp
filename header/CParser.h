@@ -19,8 +19,9 @@ class CParser {
 
 	public :
 
-		static void PARSeparateString(char cToken, const char* src, char* dst); 
-		static bool PARStringCompare(const char* str1, const char* str2);
+		static void PARSeparateString(char cToken, char* src, char* dst); 
+		static bool PARIsStringEqual(const char* str1, const char* str2);
+		static bool PARIsStringANumericalValue(const char * pcStr);
 
 		//Obligé de mettre la déclaration dans le .h car template de méthode
 		template <class MType> static void PARParserMatrice(const char * pcChemin, CMatrice<MType>& mat)
@@ -32,57 +33,96 @@ class CParser {
 				// instructions
 				char ligne[256];
 				char resultat[256];
+				unsigned int uiNbLignes = 0;
+				unsigned int uiNbColonnes = 0;
+				MType ** pdMatrice = nullptr;
 				
 				//On récupère le type de la matrice
 				fichier >> ligne;
 				CParser::PARSeparateString('=', ligne, resultat);
+				
 				//On vérifie qu'il est valide
-				if (CParser::PARStringCompare(resultat, "double"))
+				if (!CParser::PARIsStringEqual(ligne, "TypeMatrice") || !CParser::PARIsStringEqual(resultat, "double"))
 				{
-					cout << "Type de matrice valide" << endl;
-					//On récupère le nombre de lignes
-					fichier >> ligne;
-					CParser::PARSeparateString('=', ligne, resultat);
-					mat.MATModifierNbLignes(atoi(resultat));
-					
-					//On récupère le nombre de colonnes
-					fichier >> ligne;
-					CParser::PARSeparateString('=', ligne, resultat);
-					mat.MATModifierNbColonnes(atoi(resultat));
-					
-					//On saute la ligne "Matrice=["
-					fichier >> ligne;
-					
-					//On remplit la matrice
-					mat.MATModifierMatrice(mat.MATLireNbLignes(), mat.MATLireNbColonnes());
-					for (unsigned int uiBoucleL = 0; uiBoucleL < mat.MATLireNbLignes(); uiBoucleL++)
-					{
-						for (unsigned int uiBoucleC = 0; uiBoucleC < mat.MATLireNbColonnes(); uiBoucleC++)
-						{
-							//On récupère l'élement
-							fichier >> ligne;
-							mat.MATModifierElement(uiBoucleL, uiBoucleC, atof(ligne));
-						}
-					}
-					
-					cout << "mat.NbLignes = " << mat.MATLireNbLignes() << endl;
-					cout << "mat.NbColonnes = " << mat.MATLireNbColonnes() << endl;
-					mat.MATAfficher();
-				}
-				else
-				{
-					cout << "Type de matrice non valide" << endl;
+					cout << "Pas ecris \"TypeMatrice\" ou mauvais pas une matrice double" << endl;
+					cout << "throw exception" << endl;
 				}
 				
+				//On récupère le nombre de lignes
+				fichier >> ligne;
+				CParser::PARSeparateString('=', ligne, resultat);
+				
+				if (!CParser::PARIsStringEqual(ligne, "NBLignes") || !CParser::PARIsStringANumericalValue(resultat))
+				{
+					cout << "Pas ecris \"NBLignes\" ou parametre pas une valeur numerique" << endl;
+					cout << "throw exception" << endl;
+				}
+
+				uiNbLignes = atof(resultat);
+				
+				//On récupère le nombre de colonnes
+				fichier >> ligne;
+				CParser::PARSeparateString('=', ligne, resultat);
+				
+				if (!CParser::PARIsStringEqual(ligne, "NBColonnes") || !CParser::PARIsStringANumericalValue(resultat))
+				{
+					cout << "Pas ecris \"NBColonnes\" ou parametre pas une valeur numerique" << endl;
+					cout << "throw exception" << endl;
+				}
+				
+		
+				uiNbColonnes = atof(resultat);
+			
+				//On saute la ligne "Matrice=["
+				fichier >> ligne;
+				if (!CParser::PARIsStringEqual(ligne, "Matrice=["))
+				{
+					cout << "Pas ecris \"Matrice=[\"" << endl;
+					cout << "throw exception" << endl;
+				}
+				
+	
+				//On remplit la matrice
+				pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
+				for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+				{
+					pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
+				}
+			
+				for (unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+				{
+					for (unsigned int uiBoucleC = 0; uiBoucleC < ; uiBoucleC++)
+					{
+						//On récupère l'élement
+						fichier >> ligne;
+						if (!CParser::PARIsStringANumericalValue(ligne))
+						{
+							cout << "element pas une valeur numerique" << endl;
+							cout << "throw exception" << endl;
+						}
+						
+						pMTPMatrice[uiBoucleL][uiBoucleC] = atof(ligne);
+					}
+				}
+				
+				fichier >> ligne;
+				if (!CParser::PARIsStringEqual(ligne, "]"))
+				{
+					cout << "erreur dimension matrice" << endl;
+					cout << "throw exception" << endl;
+				}
+				
+				cout << "mat.NbLignes = " << mat.MATLireNbLignes() << endl;
+				cout << "mat.NbColonnes = " << mat.MATLireNbColonnes() << endl;
+				mat.MATAfficher();
+
 				fichier.close();  // on ferme le fichier
 			}
 			else  // sinon
 			{
 				cerr << "Impossible d'ouvrir le fichier !" << endl;
 			}
-			
 		}
-	  
 };
 
 #endif
