@@ -84,6 +84,13 @@ unsigned int CMatrice<MType>::MATLireNbLignes()
 template <class MType> 
 void CMatrice<MType>::MATModifierNbLignes(unsigned int uiNbLignes)
 {
+	// Gestion exception (divison par zero)
+	if(uiNbLignes == 0)
+	{
+		CException ErrConstructeur(ERR_CONSTRUCTEUR);
+		throw ErrConstructeur;
+	}
+	
 	this->uiNbLignes = uiNbLignes;
 }
 		
@@ -96,6 +103,13 @@ unsigned int CMatrice<MType>::MATLireNbColonnes()
 template <class MType> 
 void CMatrice<MType>::MATModifierNbColonnes(unsigned int uiNbColonnes)
 {
+	// Gestion exception (divison par zero)
+	if(uiNbColonnes == 0)
+	{
+		CException ErrConstructeur(ERR_CONSTRUCTEUR);
+		throw ErrConstructeur;
+	}
+	
 	this->uiNbColonnes = uiNbColonnes;
 }
 		
@@ -108,16 +122,25 @@ MType CMatrice<MType>::MATLireElement(unsigned int uiIndiceLigne, unsigned int u
 template <class MType>
 void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement)
 {
+	// Gestion exception (indices invalides)
+	if(uiIndiceLigne > uiNbLignes || uiIndiceColonne > uiNbColonnes)
+	{
+		CException ErrIndices(ERR_INDICES);
+		throw ErrIndices;
+	}
+	
 	pMTPMatrice[uiIndiceLigne][uiIndiceColonne] = MTPElement;
 }
 
 template <class MType>
-void CMatrice<MType>::MATModifierMatrice(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne)
+void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes)
 {	
-	pMTPMatrice = (MType**)malloc(sizeof(MType*) * uiIndiceLigne);
+	// Allocation mémoire
+	pMTPMatrice = (MType **)realloc(pMTPMatrice, uiNbLignes * sizeof(MType *));
+	
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
-		pMTPMatrice[uiBoucle] = (MType*)malloc(sizeof(MType) * uiIndiceColonne);
+		pMTPMatrice[uiBoucle] = (MType *)realloc(pMTPMatrice[uiBoucle], uiNbColonnes * sizeof(MType));
 	}
 }
 
@@ -146,13 +169,8 @@ CMatrice<MType>& CMatrice<MType>::operator=(CMatrice<MType>& MATMatrice)
 	MATModifierNbLignes(MATMatrice.MATLireNbLignes());
 	MATModifierNbColonnes(MATMatrice.MATLireNbColonnes());
 	
-	// Allocation mémoire
-	pMTPMatrice = (MType **)realloc(pMTPMatrice, uiNbLignes * sizeof(MType *));
-	
-	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
-	{
-		pMTPMatrice[uiBoucle] = (MType *)realloc(pMTPMatrice[uiBoucle], uiNbColonnes * sizeof(MType));
-	}
+	// Réallocation mémoire
+	MATReallouerMatrice(uiNbLignes, uiNbColonnes);
 	
 	// Recopie des valeurs
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
@@ -187,6 +205,13 @@ CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 {
+	// Gestion exception (divison par zero)
+	if(dNombre == 0)
+	{
+		CException ErrZeroDiv(ERR_ZERO_DIV);
+		throw ErrZeroDiv;
+	}
+	
 	// Recopie de la matrice
 	CMatrice<MType> *MATNouveau = new CMatrice<MType>(*this);
 	
@@ -206,12 +231,12 @@ template <class MType>
 CMatrice<MType>& CMatrice<MType>::MATTransposer()
 {
 	// Recopie de la matrice
-	CMatrice<MType> *MATNouveau = new CMatrice<MType>(uiNbLignes, uiNbColonnes);
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(uiNbColonnes, uiNbLignes);
 
 	// Calcul des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbColonnes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbLignes; uiBoucleC++)
 		{
 			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, this->MATLireElement(uiBoucleC, uiBoucleL));
 		}

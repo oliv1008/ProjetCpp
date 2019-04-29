@@ -54,7 +54,7 @@ class CParser {
 					fichier >> ligne;
 					
 					//On remplit la matrice
-					mat.MATModifierMatrice(mat.MATLireNbLignes(), mat.MATLireNbColonnes());
+					mat.MATReallouerMatrice(mat.MATLireNbLignes(), mat.MATLireNbColonnes());
 					for (unsigned int uiBoucleL = 0; uiBoucleL < mat.MATLireNbLignes(); uiBoucleL++)
 					{
 						for (unsigned int uiBoucleC = 0; uiBoucleC < mat.MATLireNbColonnes(); uiBoucleC++)

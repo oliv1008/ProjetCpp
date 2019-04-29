@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include "header/CException.h"
 
 using namespace std;
 
@@ -7,6 +8,13 @@ using namespace std;
 template <class MType>
 CMatrice<MType>& CCalculMatriciel<MType>::CMAAddition(CMatrice<MType> MATA, CMatrice<MType> MATB)
 {
+	// Gestion exception (divison par zero)
+	if(MATA.MATLireNbColonnes() != MATB.MATLireNbColonnes() || MATA.MATLireNbLignes() != MATB.MATLireNbLignes())
+	{
+		CException ErrTaille(ERR_TAILLE);
+		throw ErrTaille;
+	}
+	
 	// Allocation d'une nouvelle matrice
 	CMatrice<MType> *MATNouveau = new CMatrice<MType>(MATA.MATLireNbLignes(), MATA.MATLireNbColonnes());
 	
@@ -25,6 +33,13 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMAAddition(CMatrice<MType> MATA, CMat
 template <class MType>
 CMatrice<MType>& CCalculMatriciel<MType>::CMASoustraction(CMatrice<MType> MATA, CMatrice<MType> MATB)
 {
+	// Gestion exception (divison par zero)
+	if(MATA.MATLireNbColonnes() != MATB.MATLireNbColonnes() || MATA.MATLireNbLignes() != MATB.MATLireNbLignes())
+	{
+		CException ErrTaille(ERR_TAILLE);
+		throw ErrTaille;
+	}
+	
 	// Allocation d'une nouvelle matrice
 	CMatrice<MType> *MATNouveau = new CMatrice<MType>(MATA.MATLireNbLignes(), MATA.MATLireNbColonnes());
 	
@@ -43,10 +58,11 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMASoustraction(CMatrice<MType> MATA, 
 template <class MType>
 CMatrice<MType>& CCalculMatriciel<MType>::CMAProduit(CMatrice<MType> MATA, CMatrice<MType> MATB)
 {
+	// Gestion exception (divison par zero)
 	if(MATB.MATLireNbLignes() != MATA.MATLireNbColonnes())
 	{
-		cout << "grosse erreur mamène" << endl;
-		exit(0);	// erreur si taille de B incorrecte
+		CException ErrTaille(ERR_TAILLE);
+		throw ErrTaille;
 	}
 	
 	// Allocation d'une nouvelle matrice (Taille = Lignes de A * Colonnes de B)
