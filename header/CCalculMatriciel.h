@@ -1,7 +1,9 @@
 #ifndef CCALCULMATRICIEL
 #define CCALCULMATRICIEL
 
-#include <header/CMatrice.h>
+#define ERR_TAILLE 4
+
+#include "header/CMatrice.h"
 
 template <class MType> class CCalculMatriciel
 {

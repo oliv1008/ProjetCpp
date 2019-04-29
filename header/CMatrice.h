@@ -1,6 +1,10 @@
 #ifndef CMATRICE
 #define CMATRICE
 
+#define ERR_CONSTRUCTEUR 	1
+#define ERR_INDICES			2
+#define ERR_ZERO_DIV		3
+
 template <class MType> class CMatrice
 {
 
@@ -30,7 +34,7 @@ template <class MType> class CMatrice
 		
 		MType MATLireElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne);
 		void MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement);
-		void MATModifierMatrice(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne);
+		void MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes);
 
 		// Méthodes et surcharges d'opérateurs
 		CMatrice<MType>& operator=(CMatrice<MType>& MATMatrice);
@@ -47,7 +51,8 @@ template <class MType> class CMatrice
 		CMatrice<MType>& operator*(CMatrice<MType> MATB);
 };
 
-#include <header/CParser.h>
+#include "header/CParser.h"
+#include "header/CException.h"
 #include "src/CMatrice.cpp"
 
 #endif
