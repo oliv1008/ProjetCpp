@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "header/CException.h"
 
 using namespace std;
 

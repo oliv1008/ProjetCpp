@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstdlib>
-#include "header/CException.h"
 
 using namespace std;
 

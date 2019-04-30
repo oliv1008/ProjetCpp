@@ -7,43 +7,89 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-	CMatrice<double> A("../fichier.txt");
-	/*if (CParser::PARIsStringANumericalValue("5"))
+	// Allocation de argc-1 matrices
+	CMatrice<double> **pMATTable = (CMatrice<double> **)malloc((argc-1)*sizeof(CMatrice<double> *));
+	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
-		cout << "5 est une valeur numérique" << endl;
+		pMATTable[iBoucle] = (CMatrice<double> *)malloc(sizeof(CMatrice<double>));
 	}
-	else
+	cout << "### Allocation de " << argc-1 << " matrices..." << endl;
+	
+	// Création des matrices à partir des fichiers passés en arguments
+	for(int iBoucle = 1; iBoucle < argc; iBoucle++)
 	{
-		cout << "5 n'est pas une valeur numérique" << endl;
+		pMATTable[iBoucle-1] = new CMatrice<double>(argv[iBoucle]);
+	}
+	cout << "### Création des " << argc-1 << " matrices..." << endl;
+	
+	// Demande de c
+	double c;
+	cout << "### Saississez une valeur : ";
+	cin >> c;
+	
+	// Multiplications par c
+	cout << "\n === Multiplications par " << c << " ===" << endl;
+	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
+	{
+		cout << " > M" << iBoucle+1 << " * " << c << " = " << endl;
+		(*pMATTable[iBoucle] * c).MATAfficher();
 	}
 	
-	if (CParser::PARIsStringANumericalValue("500"))
+	// Divisions par c
+	cout << "\n === Divisions par " << c << " ===" << endl;
+	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
-		cout << "500 est une valeur numérique" << endl;
-	}
-	else
-	{
-		cout << "500 n'est pas une valeur numérique" << endl;
-	}
-	
-	if (CParser::PARIsStringANumericalValue("5 "))
-	{
-		cout << "5  est une valeur numérique" << endl;
-	}
-	else
-	{
-		cout << "5  n'est pas une valeur numérique" << endl;
+		cout << " > M" << iBoucle+1 << " / " << c << " = " << endl;
+		try {
+			(*pMATTable[iBoucle] / c).MATAfficher();
+		} catch(CException EXCErreur) {
+			EXCErreur.EXCAfficherErreur();
+		}
 	}
 	
-	if (CParser::PARIsStringANumericalValue("a"))
+	// Sommes des matrices
+	cout << "\n === Somme des matrices ===" << endl;
+	CMatrice<double> MATTemp(pMATTable[0]->MATLireNbLignes(), pMATTable[0]->MATLireNbColonnes());
+	cout << " > ";
+	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
-		cout << "a est une valeur numérique" << endl;
+		cout << "M" << iBoucle+1 << " + ";
+		try {
+			MATTemp = MATTemp + *pMATTable[iBoucle];
+		} catch(CException EXCErreur) {
+			EXCErreur.EXCAfficherErreur();
+		}
 	}
-	else
-	{
-		cout << "a n'est pas une valeur numérique" << endl;
-	}*/
+	cout << " = " << endl;
+	MATTemp.MATAfficher();
 	
+	// Alternance addition/soustraction
+	cout << " \n === Alternance addition/soustraction ===" << endl;
+	cout << " > ";
+	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
+	{
+		if(iBoucle % 2 == 0)	// Indice pair
+		{
+			cout << "M" << iBoucle+1 << " + ";
+			try {
+				MATTemp = MATTemp + *pMATTable[iBoucle];
+			} catch(CException EXCErreur) {
+				EXCErreur.EXCAfficherErreur();
+			}
+		}
+		else					// Indice impair
+		{
+			cout << "M" << iBoucle+1 << " - ";
+			try {
+				MATTemp = MATTemp - *pMATTable[iBoucle];
+			} catch(CException EXCErreur) {
+				EXCErreur.EXCAfficherErreur();
+			}
+		}
+	}
+	cout << " = " << endl;
+	MATTemp.MATAfficher();
+
 	return 0;
 }
 

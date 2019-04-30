@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "header/CException.h"
+
 using namespace std;
 
 /********* CONSTRUCTEURS *********/
@@ -21,5 +23,18 @@ unsigned int CException::EXCLireErreur()
 void CException::EXCModifierErreur(unsigned int uiEXCErreur)
 {
 	this->uiEXCErreur = uiEXCErreur;
+}
+/********************************/
+
+/*********** METHODES **********/
+void CException::EXCAfficherErreur()
+{
+	switch(uiEXCErreur)
+	{
+		case ERR_CONSTRUCTEUR : cerr << "Erreur zero div" << endl; break;
+		case ERR_INDICES : cerr << "Erreur zero div" << endl; break;
+		case ERR_TAILLE : cerr << "Erreur zero div" << endl; break;
+		case ERR_ZERO_DIV : cerr << "Erreur zero div" << endl; break;
+	}
 }
 /********************************/

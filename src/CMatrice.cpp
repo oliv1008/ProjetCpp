@@ -220,7 +220,7 @@ CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 }
 
 template <class MType>
-CMatrice<MType> CMatrice<MType>::operator/(double dNombre)
+CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 {
 	// Gestion exception (divison par zero)
 	if(dNombre == 0)
@@ -230,18 +230,18 @@ CMatrice<MType> CMatrice<MType>::operator/(double dNombre)
 	}
 	
 	// Recopie de la matrice
-	CMatrice<MType> MATNouveau = CMatrice<MType>(*this);
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(*this);
 	
 	// Calcul des valeurs
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
 		{
-			MATNouveau.MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau.MATLireElement(uiBoucleL, uiBoucleC)/dNombre);
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC)/dNombre);
 		}
 	}
 	
-	return MATNouveau;
+	return *MATNouveau;
 }
 
 template <class MType>

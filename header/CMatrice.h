@@ -1,10 +1,6 @@
 #ifndef CMATRICE
 #define CMATRICE
 
-#define ERR_CONSTRUCTEUR 	1
-#define ERR_INDICES			2
-#define ERR_ZERO_DIV		3
-
 template <class MType> class CMatrice
 {
 
@@ -40,13 +36,12 @@ template <class MType> class CMatrice
 		// Méthodes et surcharges d'opérateurs
 		CMatrice<MType>& operator=(CMatrice<MType>& MATMatrice);
 		CMatrice<MType>& operator*(double dNombre);
-		CMatrice<MType> operator/(double dNombre);
+		CMatrice<MType>& operator/(double dNombre);
 		
 		CMatrice<MType>& MATTransposer();
 		
 		void MATAfficher();
 		
-		// A CHOISIR SI ON MET CA ICI OU DANS "CALCUL MATRICIEL"
 		CMatrice<MType>& operator+(CMatrice<MType> MATB);
 		CMatrice<MType>& operator-(CMatrice<MType> MATB);
 		CMatrice<MType>& operator*(CMatrice<MType> MATB);
