@@ -67,6 +67,7 @@ CMatrice<MType>::CMatrice(CMatrice<MType>& MATCopie)
 template <class MType> 
 CMatrice<MType>::CMatrice(const char *pcChemin)
 {
+	pMTPMatrice = nullptr;
 	CParser::PARParserMatrice(pcChemin, *this);
 }
 
@@ -141,6 +142,22 @@ void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int 
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
 		pMTPMatrice[uiBoucle] = (MType *)realloc(pMTPMatrice[uiBoucle], uiNbColonnes * sizeof(MType));
+	}
+}
+
+template <class MType>
+void CMatrice<MType>::MATModifierMatrice(unsigned int uiNbLignesArg, unsigned int uiNbColonnesArg, MType ** pMTPMatriceArg)
+{
+	uiNbLignes = uiNbLignesArg;
+	uiNbColonnes = uiNbColonnesArg;
+	MATReallouerMatrice(uiNbLignesArg, uiNbColonnesArg);
+	
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	{
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		{
+			pMTPMatrice[uiBoucleL][uiBoucleC] = pMTPMatriceArg[uiBoucleL][uiBoucleC];
+		}
 	}
 }
 

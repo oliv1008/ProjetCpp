@@ -55,7 +55,7 @@ bool CParser::PARIsStringANumericalValue(const char * pcStr)
 	
 	for (unsigned int uiBoucleStr = 0; pcStr[uiBoucleStr] != '\0' && bIsNumericalValue; uiBoucleStr++)
 	{
-		if (pcStr[uiBoucleStr] <= '0' || pcStr[uiBoucleStr] >= '9' || pcStr[uiBoucleStr] != '.')
+		if ((pcStr[uiBoucleStr] < '0' || pcStr[uiBoucleStr] > '9') && pcStr[uiBoucleStr] != '.' && pcStr[uiBoucleStr] != '-')
 		{
 			bIsNumericalValue = false;
 		}

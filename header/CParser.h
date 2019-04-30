@@ -35,46 +35,65 @@ class CParser {
 				char resultat[256];
 				unsigned int uiNbLignes = 0;
 				unsigned int uiNbColonnes = 0;
-				MType ** pdMatrice = nullptr;
+				MType ** pMTPMatrice = nullptr;
 				
 				//On récupère le type de la matrice
 				fichier >> ligne;
+				cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
 				//On vérifie qu'il est valide
-				if (!CParser::PARIsStringEqual(ligne, "TypeMatrice") || !CParser::PARIsStringEqual(resultat, "double"))
+				if (!CParser::PARIsStringEqual(ligne, "TypeMatrice"))
 				{
-					cout << "Pas ecris \"TypeMatrice\" ou mauvais pas une matrice double" << endl;
+					cout << "Pas ecris \"TypeMatrice\" (erreur de format de fichier)" << endl;
+					cout << "throw exception" << endl;
+				}
+				else if (!CParser::PARIsStringEqual(resultat, "double"))
+				{
+					cout << "erreur dans le type de la matrice" << endl;
 					cout << "throw exception" << endl;
 				}
 				
 				//On récupère le nombre de lignes
 				fichier >> ligne;
+				cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
-				if (!CParser::PARIsStringEqual(ligne, "NBLignes") || !CParser::PARIsStringANumericalValue(resultat))
+				if (!CParser::PARIsStringEqual(ligne, "NBLignes"))
 				{
-					cout << "Pas ecris \"NBLignes\" ou parametre pas une valeur numerique" << endl;
+					cout << "Pas ecris \"NBLignes\" (erreur de format de fichier)" << endl;
+					cout << "throw exception" << endl;
+				}
+				else if (!CParser::PARIsStringANumericalValue(resultat))
+				{
+					cout << "erreur valeur pas numerique" << endl;
 					cout << "throw exception" << endl;
 				}
 
-				uiNbLignes = atof(resultat);
+				uiNbLignes = atoi(resultat);
 				
 				//On récupère le nombre de colonnes
 				fichier >> ligne;
+				cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
-				if (!CParser::PARIsStringEqual(ligne, "NBColonnes") || !CParser::PARIsStringANumericalValue(resultat))
+				if (!CParser::PARIsStringEqual(ligne, "NBColonnes"))
 				{
-					cout << "Pas ecris \"NBColonnes\" ou parametre pas une valeur numerique" << endl;
+					cout << "Pas ecris \"NBColonnes\" (erreur de format de fichier)" << endl;
+					cout << "throw exception" << endl;
+				}
+				else if (!CParser::PARIsStringANumericalValue(resultat))
+				{
+					cout << "erreur valeur pas numerique" << endl;
 					cout << "throw exception" << endl;
 				}
 				
 		
-				uiNbColonnes = atof(resultat);
+				uiNbColonnes = atoi(resultat);
 			
 				//On saute la ligne "Matrice=["
 				fichier >> ligne;
+				cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "Matrice=["))
 				{
 					cout << "Pas ecris \"Matrice=[\"" << endl;
@@ -91,11 +110,17 @@ class CParser {
 			
 				for (unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
 				{
-					for (unsigned int uiBoucleC = 0; uiBoucleC < ; uiBoucleC++)
+					for (unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
 					{
 						//On récupère l'élement
 						fichier >> ligne;
-						if (!CParser::PARIsStringANumericalValue(ligne))
+						cout << ligne << endl;
+						if (CParser::PARIsStringEqual(ligne, "]"))
+						{
+							cout << "erreur dimension matrice" << endl;
+							cout << "throw exception" << endl;
+						}
+						else if (!CParser::PARIsStringANumericalValue(ligne))
 						{
 							cout << "element pas une valeur numerique" << endl;
 							cout << "throw exception" << endl;
@@ -106,12 +131,18 @@ class CParser {
 				}
 				
 				fichier >> ligne;
+				cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "]"))
 				{
 					cout << "erreur dimension matrice" << endl;
 					cout << "throw exception" << endl;
 				}
 				
+				mat.MATModifierNbLignes(uiNbLignes);
+				mat.MATModifierNbColonnes(uiNbColonnes);
+				mat.MATModifierMatrice(uiNbLignes, uiNbColonnes, pMTPMatrice);
+				
+				cout << "matrice creee" << endl;
 				cout << "mat.NbLignes = " << mat.MATLireNbLignes() << endl;
 				cout << "mat.NbColonnes = " << mat.MATLireNbColonnes() << endl;
 				mat.MATAfficher();
