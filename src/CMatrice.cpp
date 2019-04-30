@@ -67,8 +67,24 @@ CMatrice<MType>::CMatrice(CMatrice<MType>& MATCopie)
 template <class MType> 
 CMatrice<MType>::CMatrice(const char *pcChemin)
 {
-	pMTPMatrice = nullptr;
-	CParser::PARParserMatrice(pcChemin, *this);
+	unsigned int uiNbLignes = 0;
+	unsigned int uiNbColonnes = 0;
+	MType **pMTPMatrice = nullptr;
+	
+	CParser::PARParserMatrice(pcChemin, uiNbLignes, uiNbColonnes, pMTPMatrice);
+	
+	// Initialisation lignes et colonnes
+	MATModifierNbLignes(uiNbLignes);
+	MATModifierNbColonnes(uiNbColonnes);
+	
+	// Allocation mémoire
+	this->pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
+	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+	{
+		this->pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
+	}
+	
+	MATModifierMatrice(pMTPMatrice);
 }
 
 /********************************/
@@ -146,12 +162,8 @@ void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int 
 }
 
 template <class MType>
-void CMatrice<MType>::MATModifierMatrice(unsigned int uiNbLignesArg, unsigned int uiNbColonnesArg, MType ** pMTPMatriceArg)
+void CMatrice<MType>::MATModifierMatrice(MType ** pMTPMatriceArg)
 {
-	uiNbLignes = uiNbLignesArg;
-	uiNbColonnes = uiNbColonnesArg;
-	MATReallouerMatrice(uiNbLignesArg, uiNbColonnesArg);
-	
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)

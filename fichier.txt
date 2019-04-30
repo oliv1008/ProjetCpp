@@ -1,6 +1,8 @@
 TypeMatrice=double
-NBLignes=100
-NBColonnes=1
+NBLignes=3
+NBColonnes=3
 Matrice=[
-5
+1 2 3
+4 5 6
+7 8 9
 ]

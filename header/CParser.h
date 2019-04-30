@@ -25,7 +25,7 @@ class CParser {
 		static bool PARIsStringANumericalValue(const char * pcStr);
 
 		//Obligé de mettre la déclaration dans le .h car template de méthode
-		template <class MType> static void PARParserMatrice(const char * pcChemin, CMatrice<MType>& mat)
+		template <class MType> static void PARParserMatrice(const char * pcChemin, unsigned int &uiNbLignes, unsigned int &uiNbColonnes, MType** &pMTPMatrice)
 		{
 			ifstream fichier(pcChemin, ios::in);  // on ouvre le fichier en lecture
  
@@ -34,9 +34,6 @@ class CParser {
 				// instructions
 				char ligne[256];
 				char resultat[256];
-				unsigned int uiNbLignes = 0;
-				unsigned int uiNbColonnes = 0;
-				MType ** pMTPMatrice = nullptr;
 				
 				//On récupère le type de la matrice
 				fichier >> ligne;
@@ -138,15 +135,6 @@ class CParser {
 					cout << "erreur dimension matrice" << endl;
 					cout << "throw exception" << endl;
 				}
-				
-				mat.MATModifierNbLignes(uiNbLignes);
-				mat.MATModifierNbColonnes(uiNbColonnes);
-				mat.MATModifierMatrice(uiNbLignes, uiNbColonnes, pMTPMatrice);
-				
-				cout << "matrice creee" << endl;
-				cout << "mat.NbLignes = " << mat.MATLireNbLignes() << endl;
-				cout << "mat.NbColonnes = " << mat.MATLireNbColonnes() << endl;
-				mat.MATAfficher();
 
 				fichier.close();  // on ferme le fichier
 			}

@@ -31,7 +31,7 @@ template <class MType> class CMatrice
 		MType MATLireElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne);
 		void MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement);
 		void MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes);
-		void MATModifierMatrice(unsigned int uiNbLignesArg, unsigned int uiNbColonnesArg, MType ** pMTPMatriceArg);
+		void MATModifierMatrice(MType ** pMTPMatriceArg);
 
 		// Méthodes et surcharges d'opérateurs
 		CMatrice<MType>& operator=(CMatrice<MType>& MATMatrice);
