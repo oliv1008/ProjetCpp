@@ -47,49 +47,79 @@ int main(int argc, char **argv)
 		}
 	}
 	
+	CMatrice<double> MATTemp(pMATTable[0]->MATLireNbLignes(), pMATTable[0]->MATLireNbColonnes());
+	
 	// Sommes des matrices
 	cout << "\n=== Somme des matrices ===" << endl;
-	CMatrice<double> MATTemp(pMATTable[0]->MATLireNbLignes(), pMATTable[0]->MATLireNbColonnes());
-	cout << "\n > ";
-	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
+	
+	try 
 	{
-		cout << "M" << iBoucle+1 << " + ";
-		try {
+		cout << "\n > M1";
+		MATTemp = *pMATTable[0];
+		for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
+		{
+			cout << " + M" << iBoucle+1;
 			MATTemp = MATTemp + *pMATTable[iBoucle];
-		} catch(CException EXCErreur) {
-			EXCErreur.EXCAfficherErreur();
 		}
+		cout << " = \n" << endl;
+		MATTemp.MATAfficher();
+	} 
+	catch(CException EXCErreur) 
+	{
+		EXCErreur.EXCAfficherErreur();
 	}
-	cout << " = \n" << endl;
-	MATTemp.MATAfficher();
 	
 	// Alternance addition/soustraction
 	cout << "\n=== Alternance addition/soustraction ===" << endl;
-	cout << "\n > M1";
-	MATTemp = *pMATTable[0];
-	for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
+	
+	try 
 	{
-		if(iBoucle % 2 == 1)	// Indice impair
+		cout << "\n > M1";
+		MATTemp = *pMATTable[0];
+		for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
 		{
-			cout << " + M" << iBoucle+1;
-			try {
+			if(iBoucle % 2 == 1)	// Indice impair
+			{
+				cout << " + M" << iBoucle+1;
 				MATTemp = MATTemp + *pMATTable[iBoucle];
-			} catch(CException EXCErreur) {
-				EXCErreur.EXCAfficherErreur();
+			}
+			else if(iBoucle % 2 == 0)					// Indice pair
+			{
+				cout << " - M" << iBoucle+1;
+				MATTemp = MATTemp - *pMATTable[iBoucle];
 			}
 		}
-		else if(iBoucle % 2 == 0)					// Indice pair
+		cout << " = \n" << endl;
+		MATTemp.MATAfficher();
+	}
+	catch(CException EXCErreur) 
+	{
+		EXCErreur.EXCAfficherErreur();
+	}
+	
+	// Produits
+	cout << "\n=== Produits ===" << endl;
+	
+		CMatrice<double> result;
+		
+	for(int iBoucle1 = 0; iBoucle1 < argc-1; iBoucle1++)
+	{
+		for(int iBoucle2 = 0; iBoucle2 < argc-1; iBoucle2++)
 		{
-			cout << " - M" << iBoucle+1;
-			try {
-				MATTemp = MATTemp - *pMATTable[iBoucle];
-			} catch(CException EXCErreur) {
+			cout << "\n > M" << iBoucle1+1 << " * M" << iBoucle2+1 << " = \n" << endl;
+			try 
+			{
+				result = (*pMATTable[iBoucle1]) * (*pMATTable[iBoucle2]);
+				result.MATAfficher();
+			}
+			catch(CException EXCErreur) 
+			{
 				EXCErreur.EXCAfficherErreur();
 			}
 		}
 	}
-	cout << " = \n" << endl;
-	MATTemp.MATAfficher();
+	
+	
 	
 	return 0;
 }

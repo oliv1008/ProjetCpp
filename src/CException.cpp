@@ -33,7 +33,7 @@ void CException::EXCAfficherErreur()
 	{
 		case ERR_CONSTRUCTEUR : cerr << " Erreur : la taille des matrices ne peut pas être nulle" << endl; break;
 		case ERR_INDICES : cerr << " Erreur : indices trop grands" << endl; break;
-		case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
+		case ERR_TAILLE : cerr << "\n\n Erreur : tailles des matrices incohérentes" << endl; break;
 		case ERR_ZERO_DIV : cerr << " Erreur : division par zéro impossible" << endl; break;
 	}
 }

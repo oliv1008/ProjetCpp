@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include "header/CCalculMatriciel.h"
 
+#define DISPLAY_PRECISION 3
+
 using namespace std;
 
 /********* CONSTRUCTEURS *********/
@@ -192,6 +194,7 @@ void CMatrice<MType>::MATAfficher()
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
 		{
+			cout.precision(DISPLAY_PRECISION);
 			cout << pMTPMatrice[uiBoucleL][uiBoucleC] << " ";
 		}
 		cout << endl;

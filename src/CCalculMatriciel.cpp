@@ -74,8 +74,11 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMAProduit(CMatrice<MType> MATA, CMatr
 		{
 			for(unsigned int uiBoucleK = 0; uiBoucleK < MATA.MATLireNbColonnes(); uiBoucleK++)
 			{
-				MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC) +
-				MATA.MATLireElement(uiBoucleL, uiBoucleK) * MATB.MATLireElement(uiBoucleK, uiBoucleC));
+				double tmp = MATNouveau->MATLireElement(uiBoucleL, uiBoucleC) + MATA.MATLireElement(uiBoucleL, uiBoucleK) * MATB.MATLireElement(uiBoucleK, uiBoucleC);
+				if(tmp < 0.0000000001)	
+					tmp = 0;
+				
+				MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, tmp);
 				// en gros là je fais C(i,j) = C(i,j) + A(i, k) * B(k, j)
 			}
 		}
