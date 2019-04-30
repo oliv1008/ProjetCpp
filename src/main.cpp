@@ -7,17 +7,6 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-	CMatrice<int> matA("mat1.txt");
-	CMatrice<int> matB("mat2.txt");
-	CMatrice<int> matC;
-	
-	cout << "=========" << endl;
-	matC = matA + matB;
-	
-	matC.MATAfficher();
-	
-	
-	/*
 	// Allocation de argc-1 matrices
 	cout << "### Allocation de " << argc-1 << " matrices..." << endl;
 	CMatrice<double> **pMATTable = (CMatrice<double> **)malloc((argc-1)*sizeof(CMatrice<double> *));
@@ -26,8 +15,9 @@ int main(int argc, char **argv)
 	cout << "### Création des " << argc-1 << " matrices..." << endl;
 	for(int iBoucle = 1; iBoucle < argc; iBoucle++)
 	{
-		cout << " > M" << iBoucle << " = \n" << endl;
 		pMATTable[iBoucle-1] = new CMatrice<double>(argv[iBoucle]);
+		cout << " > M" << iBoucle << " = \n" << endl;
+		pMATTable[iBoucle-1]->MATAfficher();
 		cout << endl;
 	}
 	
@@ -75,21 +65,22 @@ int main(int argc, char **argv)
 	
 	// Alternance addition/soustraction
 	cout << "\n=== Alternance addition/soustraction ===" << endl;
-	cout << "\n > ";
-	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
+	cout << "\n > M1";
+	MATTemp = *pMATTable[0];
+	for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
 	{
-		if(iBoucle % 2 == 0)	// Indice pair
+		if(iBoucle % 2 == 1)	// Indice impair
 		{
-			cout << "M" << iBoucle+1 << " + ";
+			cout << " + M" << iBoucle+1;
 			try {
 				MATTemp = MATTemp + *pMATTable[iBoucle];
 			} catch(CException EXCErreur) {
 				EXCErreur.EXCAfficherErreur();
 			}
 		}
-		else					// Indice impair
+		else if(iBoucle % 2 == 0)					// Indice pair
 		{
-			cout << "M" << iBoucle+1 << " - ";
+			cout << " - M" << iBoucle+1;
 			try {
 				MATTemp = MATTemp - *pMATTable[iBoucle];
 			} catch(CException EXCErreur) {
@@ -97,9 +88,9 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-	cout << " = " << endl;
+	cout << " = \n" << endl;
 	MATTemp.MATAfficher();
-	*/
+	
 	return 0;
 }
 

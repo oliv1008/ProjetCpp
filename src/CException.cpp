@@ -31,10 +31,10 @@ void CException::EXCAfficherErreur()
 {
 	switch(uiEXCErreur)
 	{
-		case ERR_CONSTRUCTEUR : cerr << "Erreur zero div" << endl; break;
-		case ERR_INDICES : cerr << "Erreur zero div" << endl; break;
-		case ERR_TAILLE : cerr << "Erreur zero div" << endl; break;
-		case ERR_ZERO_DIV : cerr << "Erreur zero div" << endl; break;
+		case ERR_CONSTRUCTEUR : cerr << " Erreur : la taille des matrices ne peut pas être nulle" << endl; break;
+		case ERR_INDICES : cerr << " Erreur : indices trop grands" << endl; break;
+		case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
+		case ERR_ZERO_DIV : cerr << " Erreur : division par zéro impossible" << endl; break;
 	}
 }
 /********************************/

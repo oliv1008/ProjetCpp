@@ -202,7 +202,7 @@ template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator=(CMatrice<MType>& MATMatrice)
 {	
 	// Réallocation mémoire
-	MATReallouerMatrice(uiNbLignes, uiNbColonnes);
+	MATReallouerMatrice(MATMatrice.MATLireNbLignes(), MATMatrice.MATLireNbColonnes());
 	
 	// Initialisation lignes et colonnes
 	MATModifierNbLignes(MATMatrice.MATLireNbLignes());
