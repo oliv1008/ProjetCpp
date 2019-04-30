@@ -152,6 +152,13 @@ void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned in
 template <class MType>
 void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes)
 {	
+	// Libération de la mémoire
+	for(unsigned int uiBoucle = 0; uiBoucle < this->MATLireNbLignes(); uiBoucle++)
+	{
+		free(pMTPMatrice[uiBoucle]);
+	}
+	free(pMTPMatrice);
+	
 	// Allocation mémoire
 	pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
 	
@@ -193,13 +200,13 @@ void CMatrice<MType>::MATAfficher()
 
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator=(CMatrice<MType>& MATMatrice)
-{
+{	
+	// Réallocation mémoire
+	MATReallouerMatrice(uiNbLignes, uiNbColonnes);
+	
 	// Initialisation lignes et colonnes
 	MATModifierNbLignes(MATMatrice.MATLireNbLignes());
 	MATModifierNbColonnes(MATMatrice.MATLireNbColonnes());
-	
-	// Réallocation mémoire
-	MATReallouerMatrice(uiNbLignes, uiNbColonnes);
 	
 	// Recopie des valeurs
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)

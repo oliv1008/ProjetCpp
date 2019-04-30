@@ -38,13 +38,13 @@ template <class MType> class CMatrice
 		CMatrice<MType>& operator*(double dNombre);
 		CMatrice<MType>& operator/(double dNombre);
 		
-		CMatrice<MType>& MATTransposer();
-		
-		void MATAfficher();
-		
 		CMatrice<MType>& operator+(CMatrice<MType> MATB);
 		CMatrice<MType>& operator-(CMatrice<MType> MATB);
 		CMatrice<MType>& operator*(CMatrice<MType> MATB);
+		
+		CMatrice<MType>& MATTransposer();
+	
+		void MATAfficher();
 };
 
 #include "header/CParser.h"

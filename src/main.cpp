@@ -7,6 +7,17 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+	CMatrice<int> matA("mat1.txt");
+	CMatrice<int> matB("mat2.txt");
+	CMatrice<int> matC;
+	
+	cout << "=========" << endl;
+	matC = matA + matB;
+	
+	matC.MATAfficher();
+	
+	
+	/*
 	// Allocation de argc-1 matrices
 	cout << "### Allocation de " << argc-1 << " matrices..." << endl;
 	CMatrice<double> **pMATTable = (CMatrice<double> **)malloc((argc-1)*sizeof(CMatrice<double> *));
@@ -88,7 +99,7 @@ int main(int argc, char **argv)
 	}
 	cout << " = " << endl;
 	MATTemp.MATAfficher();
-
+	*/
 	return 0;
 }
 
