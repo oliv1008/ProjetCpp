@@ -153,11 +153,11 @@ template <class MType>
 void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes)
 {	
 	// Allocation mémoire
-	pMTPMatrice = (MType **)realloc(pMTPMatrice, uiNbLignes * sizeof(MType *));
+	pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
 	
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
-		pMTPMatrice[uiBoucle] = (MType *)realloc(pMTPMatrice[uiBoucle], uiNbColonnes * sizeof(MType));
+		pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
 	}
 }
 

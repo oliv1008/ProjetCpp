@@ -37,7 +37,7 @@ class CParser {
 				
 				//On récupère le type de la matrice
 				fichier >> ligne;
-				cout << ligne << endl;
+				//cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
 				//On vérifie qu'il est valide
@@ -54,7 +54,7 @@ class CParser {
 				
 				//On récupère le nombre de lignes
 				fichier >> ligne;
-				cout << ligne << endl;
+				//cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
 				if (!CParser::PARIsStringEqual(ligne, "NBLignes"))
@@ -72,7 +72,7 @@ class CParser {
 				
 				//On récupère le nombre de colonnes
 				fichier >> ligne;
-				cout << ligne << endl;
+				//cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
 				if (!CParser::PARIsStringEqual(ligne, "NBColonnes"))
@@ -91,7 +91,7 @@ class CParser {
 			
 				//On saute la ligne "Matrice=["
 				fichier >> ligne;
-				cout << ligne << endl;
+				//cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "Matrice=["))
 				{
 					cout << "Pas ecris \"Matrice=[\"" << endl;
@@ -112,7 +112,7 @@ class CParser {
 					{
 						//On récupère l'élement
 						fichier >> ligne;
-						cout << ligne << endl;
+						//cout << ligne << endl;
 						if (CParser::PARIsStringEqual(ligne, "]"))
 						{
 							cout << "erreur dimension matrice" << endl;
@@ -129,7 +129,7 @@ class CParser {
 				}
 				
 				fichier >> ligne;
-				cout << ligne << endl;
+				//cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "]"))
 				{
 					cout << "erreur dimension matrice" << endl;

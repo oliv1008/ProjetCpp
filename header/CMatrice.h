@@ -8,7 +8,7 @@ template <class MType> class CMatrice
 
 		unsigned int uiNbLignes;
 		unsigned int uiNbColonnes;
-		MType **pMTPMatrice;
+		MType **pMTPMatrice = nullptr;
 
 	public :
 
