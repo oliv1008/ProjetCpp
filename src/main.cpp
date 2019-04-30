@@ -8,19 +8,18 @@ using namespace std;
 int main(int argc, char **argv)
 {
 	// Allocation de argc-1 matrices
-	CMatrice<double> **pMATTable = (CMatrice<double> **)malloc((argc-1)*sizeof(CMatrice<double> *));
-	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
-	{
-		pMATTable[iBoucle] = (CMatrice<double> *)malloc(sizeof(CMatrice<double>));
-	}
 	cout << "### Allocation de " << argc-1 << " matrices..." << endl;
+	CMatrice<double> **pMATTable = (CMatrice<double> **)malloc((argc-1)*sizeof(CMatrice<double> *));
 	
 	// Création des matrices à partir des fichiers passés en arguments
+	cout << "### Création des " << argc-1 << " matrices..." << endl;
 	for(int iBoucle = 1; iBoucle < argc; iBoucle++)
 	{
+		cout << " > M" << iBoucle << " = \n" << endl;
 		pMATTable[iBoucle-1] = new CMatrice<double>(argv[iBoucle]);
+		cout << endl;
 	}
-	cout << "### Création des " << argc-1 << " matrices..." << endl;
+	
 	
 	// Demande de c
 	double c;
@@ -28,18 +27,18 @@ int main(int argc, char **argv)
 	cin >> c;
 	
 	// Multiplications par c
-	cout << "\n === Multiplications par " << c << " ===" << endl;
+	cout << "\n=== Multiplications par " << c << " ===" << endl;
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
-		cout << " > M" << iBoucle+1 << " * " << c << " = " << endl;
+		cout << "\n > M" << iBoucle+1 << " * " << c << " = \n" << endl;
 		(*pMATTable[iBoucle] * c).MATAfficher();
 	}
 	
 	// Divisions par c
-	cout << "\n === Divisions par " << c << " ===" << endl;
+	cout << "\n=== Divisions par " << c << " ===" << endl;
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
-		cout << " > M" << iBoucle+1 << " / " << c << " = " << endl;
+		cout << "\n > M" << iBoucle+1 << " / " << c << " = \n" << endl;
 		try {
 			(*pMATTable[iBoucle] / c).MATAfficher();
 		} catch(CException EXCErreur) {
@@ -48,9 +47,9 @@ int main(int argc, char **argv)
 	}
 	
 	// Sommes des matrices
-	cout << "\n === Somme des matrices ===" << endl;
+	cout << "\n=== Somme des matrices ===" << endl;
 	CMatrice<double> MATTemp(pMATTable[0]->MATLireNbLignes(), pMATTable[0]->MATLireNbColonnes());
-	cout << " > ";
+	cout << "\n > ";
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
 		cout << "M" << iBoucle+1 << " + ";
@@ -60,12 +59,12 @@ int main(int argc, char **argv)
 			EXCErreur.EXCAfficherErreur();
 		}
 	}
-	cout << " = " << endl;
+	cout << " = \n" << endl;
 	MATTemp.MATAfficher();
 	
 	// Alternance addition/soustraction
-	cout << " \n === Alternance addition/soustraction ===" << endl;
-	cout << " > ";
+	cout << "\n=== Alternance addition/soustraction ===" << endl;
+	cout << "\n > ";
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
 		if(iBoucle % 2 == 0)	// Indice pair
