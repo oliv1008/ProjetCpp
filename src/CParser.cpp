@@ -1,5 +1,27 @@
 #include <header/CParser.h>
 
+/**********************************************
+**** Nom: PARSeparateString                ****
+***********************************************
+****                                       ****
+***********************************************
+**** Précondition: cToken est un caractère ****
+****    ASCII valide                       ****
+****    pcStr1 & pcStr2 sont finies par un ****
+****    '\0'                               ****
+**** Entrée: cToken : char                 ****
+****    pcStr1 : char*                     ****
+****    pcStr2 : char*                     ****
+**** Entraîne: Si pcStr1 contient cToken : ****
+****      pcStr1 se fini à l'indice de     ****
+****    cToken                             ****
+****      pcStr2 contient la suite de la   ****
+****    chaine de cararctères              ****
+****    Sinon :                            ****
+****      pcStr1 inchangée                 ****
+****      pcStr2 = "\0"                    ****
+**** Sortie: Rien                          ****
+**********************************************/
 void CParser::PARSeparateString(char cToken, char* pcStr1, char* pcStr2)
 {
 	bool bCopie = false;
@@ -27,14 +49,30 @@ void CParser::PARSeparateString(char cToken, char* pcStr1, char* pcStr2)
 	pcStr2[uiBoucleDst] = '\0';
 }
 
-bool CParser::PARIsStringEqual(const char * str1, const char * str2)
+/************************************************
+**** Nom: PARIsStringEqual                   ****
+*************************************************
+****                                         ****
+*************************************************
+**** Précondition: pccStr1 & pccStr2 chaines ****
+****    de caractère valide (terminée par un ****
+****    '\0')                                ****
+**** Entrée: pccStr1 : const char *          ****
+****    pccStr2 : const char *               ****
+**** Entraîne: Rien                          ****
+**** Sortie: Vrai si la chaine de caractère  ****
+****    pointée par pccStr1 = la chaine de   ****
+****    caractère pointée par pccStr2        ****
+****    Faux sinon                           ****
+************************************************/
+bool CParser::PARIsStringEqual(const char * pccStr1, const char * pccStr2)
 {
 	unsigned int uiBoucleStr = 0;
 	bool bResultat = true;
 	
-	while (bResultat == true && str1[uiBoucleStr] != '\0' && str2[uiBoucleStr] != '\0')
+	while (bResultat == true && pccStr1[uiBoucleStr] != '\0' && pccStr2[uiBoucleStr] != '\0')
 	{
-		if (str1[uiBoucleStr] != str2[uiBoucleStr])
+		if (pccStr1[uiBoucleStr] != pccStr2[uiBoucleStr])
 		{
 			bResultat = false;
 		}
@@ -42,13 +80,27 @@ bool CParser::PARIsStringEqual(const char * str1, const char * str2)
 		uiBoucleStr++;
 	}
 	
-	if (str1[uiBoucleStr] != str2[uiBoucleStr])
+	if (pccStr1[uiBoucleStr] != pccStr2[uiBoucleStr])
 	{
 		bResultat = false;
 	}
 	return bResultat;
 }
 
+/************************************************
+**** Nom: PARIsStringANumericalValue         ****
+*************************************************
+****                                         ****
+*************************************************
+**** Précondition: pcStr chaine de caractère ****
+****    valide (terminée par un '\0')        ****
+**** Entrée: pcStr : const char *            ****
+**** Entraîne: Rien                          ****
+**** Sortie: Vrai si pcStr pointe vers une   ****
+****    chaine de caractère composée de      ****
+****    chiffre ou de point                  ****
+****    Faux sinon                           ****
+************************************************/
 bool CParser::PARIsStringANumericalValue(const char * pcStr)
 {
 	bool bIsNumericalValue = true;

@@ -35,6 +35,9 @@ void CException::EXCAfficherErreur()
 		case ERR_INDICES : cerr << " Erreur : indices trop grands" << endl; break;
 		case ERR_TAILLE : cerr << "\n\n Erreur : tailles des matrices incohérentes" << endl; break;
 		case ERR_ZERO_DIV : cerr << " Erreur : division par zéro impossible" << endl; break;
+		case ERR_FORMAT : cerr << " Erreur : format de fichier non valide" << endl; break;
+		case ERR_NUMERIQUE : cerr << " Erreur : valeur non numérique" << endl; breal;
+		case ERR_DIMENSION : cerr << "Erreur : erreur dans la dimension de la matrice" << endl; break;
 	}
 }
 /********************************/

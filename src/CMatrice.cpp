@@ -73,20 +73,38 @@ CMatrice<MType>::CMatrice(const char *pcChemin)
 	unsigned int uiNbColonnes = 0;
 	MType **pMTPMatrice = nullptr;
 	
-	CParser::PARParserMatrice(pcChemin, uiNbLignes, uiNbColonnes, pMTPMatrice);
-	
-	// Initialisation lignes et colonnes
-	MATModifierNbLignes(uiNbLignes);
-	MATModifierNbColonnes(uiNbColonnes);
-	
-	// Allocation mémoire
-	this->pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
-	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+	try
 	{
-		this->pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
+		CParser::PARParserMatrice(pcChemin, uiNbLignes, uiNbColonnes, pMTPMatrice);
+		
+		
+		// Initialisation lignes et colonnes
+		MATModifierNbLignes(uiNbLignes);
+		MATModifierNbColonnes(uiNbColonnes);
+		
+		// Allocation mémoire
+		this->pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
+		for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+		{
+			this->pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
+		}
+		
+		MATModifierMatrice(pMTPMatrice);
 	}
-	
-	MATModifierMatrice(pMTPMatrice);
+	catch (CException EXCLevee)
+	{
+		EXCLevee.EXCAfficherErreur();
+		cerr << "Erreur création matrice à partir d'un fichier" << endl;
+		cerr << "Utilisation du constructeur par défaut" << endl;
+		
+		// Initialisation lignes et colonnes
+		MATModifierNbLignes(1);
+		MATModifierNbColonnes(1);
+		
+		// Allocation mémoire
+		pMTPMatrice = (MType **)malloc(sizeof(MType *));
+		pMTPMatrice[0] = (MType *)malloc(sizeof(MType));
+		}
 }
 
 /********************************/
@@ -151,6 +169,18 @@ void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned in
 	pMTPMatrice[uiIndiceLigne][uiIndiceColonne] = MTPElement;
 }
 
+/**********************************************
+**** Nom: MATReallouerMatrice              ****
+***********************************************
+****                                       ****
+***********************************************
+**** Précondition: Rien                    ****
+**** Entrée: uiNbLignes : unsigned int     ****
+****    uiNbColonnes : unsigned int        ****
+**** Entraîne: Une réallocation du tableau ****
+****    2D contenu dans la matrice         ****
+**** Sortie: Rien                          ****
+**********************************************/
 template <class MType>
 void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes)
 {	
@@ -170,6 +200,20 @@ void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int 
 	}
 }
 
+/***********************************************
+**** Nom: MATReallouerMatrice               ****
+************************************************
+****                                        ****
+************************************************
+**** Précondition: pMTPMatriceArg est un    ****
+****    tableau 2D de dimension égale à     ****
+****    celui contenu dans la matrice       ****
+**** Entrée: pMTPMatriceArg : MType **      ****
+**** Entraîne: Copie élément par élément de ****
+****    pMTPMatriceArg dans pMTPMatrice de  ****
+****    la matrice                          ****
+**** Sortie: Rien                           ****
+***********************************************/
 template <class MType>
 void CMatrice<MType>::MATModifierMatrice(MType ** pMTPMatriceArg)
 {

@@ -16,15 +16,39 @@ class CParser {
 
 	private :
 
-		// rien ma gueule
+		
 
 	public :
 
-		static void PARSeparateString(char cToken, char* src, char* dst); 
-		static bool PARIsStringEqual(const char* str1, const char* str2);
+		static void PARSeparateString(char cToken, char* pcStr1, char* pcStr2); 
+		static bool PARIsStringEqual(const char* pccStr1, const char* pccStr2);
 		static bool PARIsStringANumericalValue(const char * pcStr);
 
 		//Obligé de mettre la déclaration dans le .h car template de méthode
+		/************************************************
+		**** Nom: PARParserMatrice                   ****
+		*************************************************
+		****                                         ****
+		*************************************************
+		**** Précondition: pcChemin pointe vers une  ****
+		****    chaine de caractère valide (terminée ****
+		****    par '\0')                            ****
+		**** Entrée: pcChemin : const char *         ****
+		****    uiNbLignes : unsigned int &          ****
+		****    uiNbColonnes : unsigned int &        ****
+		****    pMTPMatrice : MType** &              ****
+		****                                         ****
+		**** Entraîne: Si pcChemin est un chemin     ****
+		****    valide vers un fichier et ce fichier ****
+		****    respecte le format demandé :         ****
+		****      uiNbLigne, uiNbColonnes et         ****
+		****    pMTPMatrice sont initialisées aux    ****
+		****    valeurs de la matrice contenu dans   ****
+		****    le fichier                           ****
+		****    Sinon :                              ****
+		****      La fonction renvoie une exception  ****
+		**** Sortie: Rien                            ****
+		************************************************/
 		template <class MType> static void PARParserMatrice(const char * pcChemin, unsigned int &uiNbLignes, unsigned int &uiNbColonnes, MType** &pMTPMatrice)
 		{
 			ifstream fichier(pcChemin, ios::in);  // on ouvre le fichier en lecture
@@ -41,15 +65,10 @@ class CParser {
 				CParser::PARSeparateString('=', ligne, resultat);
 				
 				//On vérifie qu'il est valide
-				if (!CParser::PARIsStringEqual(ligne, "TypeMatrice"))
+				if (!CParser::PARIsStringEqual(ligne, "TypeMatrice") || !CParser::PARIsStringEqual(resultat, "double"))
 				{
-					cout << "Pas ecris \"TypeMatrice\" (erreur de format de fichier)" << endl;
-					cout << "throw exception" << endl;
-				}
-				else if (!CParser::PARIsStringEqual(resultat, "double"))
-				{
-					cout << "erreur dans le type de la matrice" << endl;
-					cout << "throw exception" << endl;
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				
 				//On récupère le nombre de lignes
@@ -59,13 +78,13 @@ class CParser {
 				
 				if (!CParser::PARIsStringEqual(ligne, "NBLignes"))
 				{
-					cout << "Pas ecris \"NBLignes\" (erreur de format de fichier)" << endl;
-					cout << "throw exception" << endl;
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				else if (!CParser::PARIsStringANumericalValue(resultat))
 				{
-					cout << "erreur valeur pas numerique" << endl;
-					cout << "throw exception" << endl;
+					CException ErrNumerique(ERR_NUMERIQUE);
+					throw ErrNumerique;
 				}
 
 				uiNbLignes = atoi(resultat);
@@ -77,13 +96,13 @@ class CParser {
 				
 				if (!CParser::PARIsStringEqual(ligne, "NBColonnes"))
 				{
-					cout << "Pas ecris \"NBColonnes\" (erreur de format de fichier)" << endl;
-					cout << "throw exception" << endl;
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				else if (!CParser::PARIsStringANumericalValue(resultat))
 				{
-					cout << "erreur valeur pas numerique" << endl;
-					cout << "throw exception" << endl;
+					CException ErrNumerique(ERR_NUMERIQUE);
+					throw ErrNumerique;
 				}
 				
 		
@@ -94,8 +113,8 @@ class CParser {
 				//cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "Matrice=["))
 				{
-					cout << "Pas ecris \"Matrice=[\"" << endl;
-					cout << "throw exception" << endl;
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				
 	
@@ -115,13 +134,13 @@ class CParser {
 						//cout << ligne << endl;
 						if (CParser::PARIsStringEqual(ligne, "]"))
 						{
-							cout << "erreur dimension matrice" << endl;
-							cout << "throw exception" << endl;
+							CException ErrDimension(ERR_DIMENSION);
+							throw ErrDimension;
 						}
 						else if (!CParser::PARIsStringANumericalValue(ligne))
 						{
-							cout << "element pas une valeur numerique" << endl;
-							cout << "throw exception" << endl;
+							CException ErrNumerique(ERR_NUMERIQUE);
+							throw ErrNumerique;
 						}
 						
 						pMTPMatrice[uiBoucleL][uiBoucleC] = atof(ligne);
@@ -132,8 +151,8 @@ class CParser {
 				//cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "]"))
 				{
-					cout << "erreur dimension matrice" << endl;
-					cout << "throw exception" << endl;
+					CException ErrDimension(ERR_DIMENSION);
+					throw ErrDimension;
 				}
 
 				fichier.close();  // on ferme le fichier

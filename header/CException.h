@@ -7,6 +7,9 @@
 #define ERR_INDICES			2
 #define ERR_ZERO_DIV		3
 #define ERR_TAILLE 			4
+#define ERR_FORMAT 			5
+#define ERR_NUMERIQUE 		6
+#define ERR_DIMENSION 		7
 
 class CException 
 {
