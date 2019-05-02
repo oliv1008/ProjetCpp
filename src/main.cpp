@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 	CMatrice<double> **pMATTable = (CMatrice<double> **)malloc((argc-1)*sizeof(CMatrice<double> *));
 	
 	// Création des matrices à partir des fichiers passés en arguments
-	cout << "### Création des " << argc-1 << " matrices..." << endl;
+	cout << "### Création des " << argc-1 << " matrices...\n" << endl;
 	for(int iBoucle = 1; iBoucle < argc; iBoucle++)
 	{
 		pMATTable[iBoucle-1] = new CMatrice<double>(argv[iBoucle]);

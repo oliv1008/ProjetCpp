@@ -135,6 +135,13 @@ void CMatrice<MType>::MATModifierNbColonnes(unsigned int uiNbColonnes)
 template <class MType>
 MType CMatrice<MType>::MATLireElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne)
 {
+	// Gestion exception (indices invalides)
+	if(uiIndiceLigne >= uiNbLignes || uiIndiceColonne >= uiNbColonnes)
+	{
+		CException ErrConstructeur(ERR_INDICES);
+		throw ErrConstructeur;
+	}
+	
 	return pMTPMatrice[uiIndiceLigne][uiIndiceColonne];
 }
 
