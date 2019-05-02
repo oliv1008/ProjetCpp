@@ -36,7 +36,7 @@ void CException::EXCAfficherErreur()
 		case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
 		case ERR_ZERO_DIV : cerr << " Erreur : division par zéro impossible" << endl; break;
 		case ERR_FORMAT : cerr << " Erreur : format de fichier non valide" << endl; break;
-		case ERR_NUMERIQUE : cerr << " Erreur : valeur non numérique" << endl; breal;
+		case ERR_NUMERIQUE : cerr << " Erreur : valeur non numérique" << endl; break;
 		case ERR_DIMENSION : cerr << "Erreur : erreur dans la dimension de la matrice" << endl; break;
 	}
 }

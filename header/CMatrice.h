@@ -19,7 +19,7 @@ template <class MType> class CMatrice
 		CMatrice(const char *pcChemin);
 
 		// Destructeur
-		//~CMatrice();
+		~CMatrice();
 
 		// Accesseurs
 		unsigned int MATLireNbLignes();

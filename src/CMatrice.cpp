@@ -5,12 +5,11 @@
 #include <cstdlib>
 #include "header/CCalculMatriciel.h"
 
-#define DISPLAY_PRECISION 3
+#define DISPLAY_PRECISION 3		// Précision (nombre de chiffres après la virgule) de l'affichage de matrices
 
 using namespace std;
 
 /********* CONSTRUCTEURS *********/
-
 /** Constructeur par défaut **/
 template <class MType> 
 CMatrice<MType>::CMatrice()
@@ -21,7 +20,7 @@ CMatrice<MType>::CMatrice()
 	
 	// Allocation mémoire
 	pMTPMatrice = (MType **)malloc(sizeof(MType *));
-	pMTPMatrice[0] = (MType *)malloc(sizeof(MType));
+	pMTPMatrice[0] = (MType *)calloc(1, sizeof(MType));
 }
 
 /** Constructeur de confort **/
@@ -36,7 +35,7 @@ CMatrice<MType>::CMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes)
 	pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
-		pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
+		pMTPMatrice[uiBoucle] = (MType *)calloc(uiNbColonnes, sizeof(MType));
 	}
 }
 
@@ -96,7 +95,6 @@ CMatrice<MType>::CMatrice(const char *pcChemin)
 		EXCLevee.EXCAfficherErreur();
 		cerr << "Erreur création matrice à partir d'un fichier" << endl;
 		cerr << "Utilisation du constructeur par défaut" << endl;
-		
 		// Initialisation lignes et colonnes
 		MATModifierNbLignes(1);
 		MATModifierNbColonnes(1);
@@ -106,10 +104,19 @@ CMatrice<MType>::CMatrice(const char *pcChemin)
 		pMTPMatrice[0] = (MType *)malloc(sizeof(MType));
 		}
 }
-
 /********************************/
 
-
+/********** DESTRUCTEUR *********/ 
+template <class MType>
+CMatrice<MType>::~CMatrice()
+{
+	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+	{
+		free(pMTPMatrice[uiBoucle]);
+	}
+	free(pMTPMatrice);
+}
+/********************************/
 
 /********** ACCESSEURS **********/ 
 template <class MType> 
@@ -118,6 +125,16 @@ unsigned int CMatrice<MType>::MATLireNbLignes()
 	return uiNbLignes;
 }
 
+/***********************************************************************************
+**** Nom: MATModifierNbLignes                                                   ****
+************************************************************************************
+**** Accesseur de l'argument uiNbLignes                                         ****
+************************************************************************************
+**** Précondition: uiNbLignes != 0 (sinon lève une exception)                   ****
+**** Entrée: uiNbLignes : unsigned int                                          ****
+**** Entraîne: Le changement de l'argument uiNbLignes de la matrice qui appelle ****
+**** Sortie: Rien                                                               ****
+***********************************************************************************/
 template <class MType> 
 void CMatrice<MType>::MATModifierNbLignes(unsigned int uiNbLignes)
 {
@@ -137,6 +154,16 @@ unsigned int CMatrice<MType>::MATLireNbColonnes()
 	return uiNbColonnes;
 }
 
+/***********************************************************************************
+**** Nom: MATModifierNbColonnes                                                 ****
+************************************************************************************
+**** Accesseur de l'argument uiNbColonnes                                       ****
+************************************************************************************
+**** Précondition: uiNbColonnes != 0 (sinon lève une exception)                 ****
+**** Entrée: uiNbColonnes : unsigned int                                        ****
+**** Entraîne: Le changement de l'argument uiNbColonnes de la matrice qui app.  ****
+**** Sortie: Rien                                                               ****
+***********************************************************************************/
 template <class MType> 
 void CMatrice<MType>::MATModifierNbColonnes(unsigned int uiNbColonnes)
 {
@@ -163,6 +190,18 @@ MType CMatrice<MType>::MATLireElement(unsigned int uiIndiceLigne, unsigned int u
 	return pMTPMatrice[uiIndiceLigne][uiIndiceColonne];
 }
 
+/***********************************************************************************
+**** Nom: MATModifierElement                                                    ****
+************************************************************************************
+**** Permet de modifier un élément unique de la matrice                         ****
+************************************************************************************
+**** Précondition: uiIndiceLigne < uiNbLignes et uiIndiceColonne < uiNbColonnes ****
+**** Entrée: uiIndiceLigne : unsigned int,                                      ****
+****		 uiIndiceColonne : unsigned int,				                    ****
+****		 MTPElement : MType													**** 
+**** Entraîne: Le changement de pMTPMatrice[uiIndiceLigne][uiIndiceColonne]     ****
+**** Sortie: Rien                                                               ****
+***********************************************************************************/
 template <class MType>
 void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement)
 {
@@ -176,18 +215,16 @@ void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned in
 	pMTPMatrice[uiIndiceLigne][uiIndiceColonne] = MTPElement;
 }
 
-/**********************************************
-**** Nom: MATReallouerMatrice              ****
-***********************************************
-****                                       ****
-***********************************************
-**** Précondition: Rien                    ****
-**** Entrée: uiNbLignes : unsigned int     ****
-****    uiNbColonnes : unsigned int        ****
-**** Entraîne: Une réallocation du tableau ****
-****    2D contenu dans la matrice         ****
-**** Sortie: Rien                          ****
-**********************************************/
+/***********************************************************************************
+**** Nom: MATReallouerMatrice                                                   ****
+************************************************************************************
+**** Permet de réallouer une matrice existante à une nouvelle taille            ****
+************************************************************************************
+**** Précondition: Rien														    ****
+**** Entrée: uiNbLignes : unsigned int, uiNbColonnes : unsigned int             ****
+**** Entraîne: Une réallocation du tableau 2D contenu dans la matrice           ****
+**** Sortie: Rien                                                               ****
+***********************************************************************************/
 template <class MType>
 void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes)
 {	
@@ -203,24 +240,20 @@ void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int 
 	
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
-		pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
+		pMTPMatrice[uiBoucle] = (MType *)calloc(uiNbColonnes, sizeof(MType));
 	}
 }
 
-/***********************************************
-**** Nom: MATReallouerMatrice               ****
-************************************************
-****                                        ****
-************************************************
-**** Précondition: pMTPMatriceArg est un    ****
-****    tableau 2D de dimension égale à     ****
-****    celui contenu dans la matrice       ****
-**** Entrée: pMTPMatriceArg : MType **      ****
-**** Entraîne: Copie élément par élément de ****
-****    pMTPMatriceArg dans pMTPMatrice de  ****
-****    la matrice                          ****
-**** Sortie: Rien                           ****
-***********************************************/
+/***********************************************************************************
+**** Nom: MATModifierMatrice                                                    ****
+************************************************************************************
+**** Permet de modifier une matrice depuis un tableau 2D                        ****
+************************************************************************************
+**** Précondition: pMTPMatriceArg est de la meme taille que la matrice qui app. ****
+**** Entrée: pMTPMatriceArg : MType **                                          ****
+**** Entraîne: Copie élément par élément de pMTPMatriceArg dans la matrice      ****
+**** Sortie: Rien                                                               ****
+***********************************************************************************/
 template <class MType>
 void CMatrice<MType>::MATModifierMatrice(MType ** pMTPMatriceArg)
 {
@@ -232,12 +265,21 @@ void CMatrice<MType>::MATModifierMatrice(MType ** pMTPMatriceArg)
 		}
 	}
 }
-
 /*******************************/ 
 
 
 
 /*********** METHODES **********/
+/***********************************************************************************
+**** Nom: MATAfficher                                                           ****
+************************************************************************************
+**** Affiche une matrice à l'écran                                              ****
+************************************************************************************
+**** Précondition: Rien                                                         ****
+**** Entrée: Rien                                                               ****
+**** Entraîne: L'affichage de la matrice qui appelle la fonction                ****
+**** Sortie: Rien                                                               ****
+***********************************************************************************/
 template <class MType> 
 void CMatrice<MType>::MATAfficher()
 {
@@ -252,6 +294,16 @@ void CMatrice<MType>::MATAfficher()
 	}
 }
 
+/***********************************************************************************
+**** Nom: operator=                                                             ****
+************************************************************************************
+**** Surcharge de l'opérateur = entre 2 matrices                                ****
+************************************************************************************
+**** Précondition: Rien                                                         ****
+**** Entrée: MATMatrice : CMatrice<MType>&                                      ****
+**** Entraîne: La recopie de MATMatrice dans la matrice qui appelle la fonction ****
+**** Sortie: CMatrice<MType>&                                                   ****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator=(CMatrice<MType>& MATMatrice)
 {	
@@ -274,6 +326,16 @@ CMatrice<MType>& CMatrice<MType>::operator=(CMatrice<MType>& MATMatrice)
 	return *this;
 }
 
+/***********************************************************************************
+**** Nom: operator*                                                             ****
+************************************************************************************
+**** Surcharge de l'opérateur * entre une matrice et un double                  ****
+************************************************************************************
+**** Précondition: Rien                                                         ****
+**** Entrée: dNombre : double                                                   ****
+**** Entraîne: Le calcul de (dNombre * la matrice qui appelle la fonction)      ****
+**** Sortie: CMatrice<MType>&                                                   ****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 {
@@ -292,6 +354,16 @@ CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 	return *MATNouveau;
 }
 
+/***********************************************************************************
+**** Nom: operator/                                                             ****
+************************************************************************************
+**** Surcharge de l'opérateur / entre une matrice et un double                  ****
+************************************************************************************
+**** Précondition: dNombre != 0 (sinon exception levée)                         ****
+**** Entrée: dNombre : double                                                   ****
+**** Entraîne: Le calcul de (la matrice qui appelle la fonction / dNombre)      ****
+**** Sortie: CMatrice<MType>&                                                   ****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 {
@@ -317,6 +389,16 @@ CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 	return *MATNouveau;
 }
 
+/***********************************************************************************
+**** Nom: MATTransposer                                                         ****
+************************************************************************************
+**** Fonction utilisée pour transposer une matrice                              ****
+************************************************************************************
+**** Précondition: Rien                                                         ****
+**** Entrée: Rien                                                               ****
+**** Entraîne: La transposition de la matrice qui appelle la fonction           ****
+**** Sortie: CMatrice<MType>&                                                   ****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::MATTransposer()
 {
@@ -335,18 +417,36 @@ CMatrice<MType>& CMatrice<MType>::MATTransposer()
 	return *MATNouveau;
 }
 
+/***********************************************************************************
+**** Nom: operator+                                                             ****
+************************************************************************************
+**** Surcharge de l'opérateur + entre 2 matrices                                ****
+**** Appelle la fonction CMAAddition, se référer à la doc de cette fonction     ****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator+(CMatrice<MType> MATB)
 {
 	return CCalculMatriciel<MType>::CMAAddition(*this, MATB);
 }
 
+/***********************************************************************************
+**** Nom: operator-                                                             ****
+************************************************************************************
+**** Surcharge de l'opérateur - entre 2 matrices                                ****
+**** Appelle la fonction CMASoustraction, se référer à la doc de cette fonction ****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator-(CMatrice<MType> MATB)
 {
 	return CCalculMatriciel<MType>::CMASoustraction(*this, MATB);
 }
 
+/***********************************************************************************
+**** Nom: operator*                                                             ****
+************************************************************************************
+**** Surcharge de l'opérateur * entre 2 matrices                                ****
+**** Appelle la fonction CMAProduit, se référer à la doc de cette fonction      ****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType> MATB)
 {

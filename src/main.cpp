@@ -15,7 +15,15 @@ int main(int argc, char **argv)
 	cout << "### Création des " << argc-1 << " matrices...\n" << endl;
 	for(int iBoucle = 1; iBoucle < argc; iBoucle++)
 	{
-		pMATTable[iBoucle-1] = new CMatrice<double>(argv[iBoucle]);
+		try 
+		{
+			pMATTable[iBoucle-1] = new CMatrice<double>(argv[iBoucle]);
+		}
+		catch(CException EXCErreur) 
+		{
+			EXCErreur.EXCAfficherErreur();
+		}
+		
 		cout << " > M" << iBoucle << " = \n" << endl;
 		pMATTable[iBoucle-1]->MATAfficher();
 		cout << endl;
@@ -40,9 +48,12 @@ int main(int argc, char **argv)
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
 		cout << "\n > M" << iBoucle+1 << " / " << c << " = \n" << endl;
-		try {
+		try 
+		{
 			(*pMATTable[iBoucle] / c).MATAfficher();
-		} catch(CException EXCErreur) {
+		} 
+		catch(CException EXCErreur) 
+		{
 			EXCErreur.EXCAfficherErreur();
 		}
 	}
@@ -100,7 +111,7 @@ int main(int argc, char **argv)
 	// Produits
 	cout << "\n=== Produits ===" << endl;
 	
-		CMatrice<double> result;
+	CMatrice<double> result;
 		
 	for(int iBoucle1 = 0; iBoucle1 < argc-1; iBoucle1++)
 	{
