@@ -6,9 +6,9 @@ template <class MType> class CMatrice
 
 	private :
 
-		unsigned int uiNbLignes;
-		unsigned int uiNbColonnes;
-		MType **pMTPMatrice = nullptr;
+		unsigned int uiMATNbLignes;
+		unsigned int uiMATNbColonnes;
+		MType **pMATMTPMatrice = nullptr;
 
 	public :
 
@@ -49,6 +49,7 @@ template <class MType> class CMatrice
 
 #include "header/CParser.h"
 #include "header/CException.h"
+#include "header/CCalculMatriciel.h"
 #include "src/CMatrice.cpp"
 
 #endif

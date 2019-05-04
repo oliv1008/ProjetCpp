@@ -1,8 +1,6 @@
 #ifndef CCALCULMATRICIEL
 #define CCALCULMATRICIEL
 
-#include "header/CMatrice.h"
-
 template <class MType> class CCalculMatriciel
 {
 	public:
@@ -14,5 +12,6 @@ template <class MType> class CCalculMatriciel
 };
 
 #include "src/CCalculMatriciel.cpp"
+#include "header/CException.h"
 
 #endif

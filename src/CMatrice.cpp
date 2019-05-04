@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <cstdlib>
-#include "header/CCalculMatriciel.h"
 
 #define DISPLAY_PRECISION 3		// Précision (nombre de chiffres après la virgule) de l'affichage de matrices
 
@@ -19,8 +18,8 @@ CMatrice<MType>::CMatrice()
 	MATModifierNbColonnes(1);
 	
 	// Allocation mémoire
-	pMTPMatrice = (MType **)malloc(sizeof(MType *));
-	pMTPMatrice[0] = (MType *)calloc(1, sizeof(MType));
+	pMATMTPMatrice = (MType **)malloc(sizeof(MType *));
+	pMATMTPMatrice[0] = (MType *)calloc(1, sizeof(MType));
 }
 
 /** Constructeur de confort **/
@@ -32,10 +31,10 @@ CMatrice<MType>::CMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes)
 	MATModifierNbColonnes(uiNbColonnes);
 	
 	// Allocation mémoire
-	pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
+	pMATMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
-		pMTPMatrice[uiBoucle] = (MType *)calloc(uiNbColonnes, sizeof(MType));
+		pMATMTPMatrice[uiBoucle] = (MType *)calloc(uiNbColonnes, sizeof(MType));
 	}
 }
 
@@ -48,16 +47,16 @@ CMatrice<MType>::CMatrice(CMatrice<MType>& MATCopie)
 	MATModifierNbColonnes(MATCopie.MATLireNbColonnes());
 	
 	// Allocation mémoire
-	pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
-	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+	pMATMTPMatrice = (MType **)malloc(uiMATNbLignes * sizeof(MType *));
+	for(unsigned int uiBoucle = 0; uiBoucle < uiMATNbLignes; uiBoucle++)
 	{
-		pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
+		pMATMTPMatrice[uiBoucle] = (MType *)malloc(uiMATNbColonnes * sizeof(MType));
 	}
 	
 	// Recopie des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
 			MATModifierElement(uiBoucleL, uiBoucleC, MATCopie.MATLireElement(uiBoucleL, uiBoucleC));
 		}
@@ -79,10 +78,10 @@ CMatrice<MType>::CMatrice(const char *pcChemin)
 	MATModifierNbColonnes(uiNbColonnes);
 		
 	// Allocation mémoire
-	this->pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
+	this->pMATMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
-		this->pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
+		this->pMATMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
 	}
 		
 	MATModifierMatrice(pMTPMatrice);
@@ -94,11 +93,11 @@ CMatrice<MType>::CMatrice(const char *pcChemin)
 template <class MType>
 CMatrice<MType>::~CMatrice()
 {
-	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+	for(unsigned int uiBoucle = 0; uiBoucle < uiMATNbLignes; uiBoucle++)
 	{
-		free(pMTPMatrice[uiBoucle]);
+		free(pMATMTPMatrice[uiBoucle]);
 	}
-	free(pMTPMatrice);
+	free(pMATMTPMatrice);
 }
 /********************************/
 
@@ -106,7 +105,7 @@ CMatrice<MType>::~CMatrice()
 template <class MType> 
 unsigned int CMatrice<MType>::MATLireNbLignes()
 {
-	return uiNbLignes;
+	return uiMATNbLignes;
 }
 
 /***********************************************************************************
@@ -122,20 +121,20 @@ unsigned int CMatrice<MType>::MATLireNbLignes()
 template <class MType> 
 void CMatrice<MType>::MATModifierNbLignes(unsigned int uiNbLignes)
 {
-	// Gestion exception (divison par zero)
+	// Gestion exception (dimension nulle)
 	if(uiNbLignes == 0)
 	{
 		CException ErrConstructeur(ERR_CONSTRUCTEUR);
 		throw ErrConstructeur;
 	}
 	
-	this->uiNbLignes = uiNbLignes;
+	uiMATNbLignes = uiNbLignes;
 }
 		
 template <class MType> 
 unsigned int CMatrice<MType>::MATLireNbColonnes()
 {
-	return uiNbColonnes;
+	return uiMATNbColonnes;
 }
 
 /***********************************************************************************
@@ -151,27 +150,27 @@ unsigned int CMatrice<MType>::MATLireNbColonnes()
 template <class MType> 
 void CMatrice<MType>::MATModifierNbColonnes(unsigned int uiNbColonnes)
 {
-	// Gestion exception (divison par zero)
+	// Gestion exception (dimension nulle)
 	if(uiNbColonnes == 0)
 	{
 		CException ErrConstructeur(ERR_CONSTRUCTEUR);
 		throw ErrConstructeur;
 	}
 	
-	this->uiNbColonnes = uiNbColonnes;
+	uiMATNbColonnes = uiNbColonnes;
 }
 		
 template <class MType>
 MType CMatrice<MType>::MATLireElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne)
 {
 	// Gestion exception (indices invalides)
-	if(uiIndiceLigne >= uiNbLignes || uiIndiceColonne >= uiNbColonnes)
+	if(uiIndiceLigne >= uiMATNbLignes || uiIndiceColonne >= uiMATNbColonnes)
 	{
 		CException ErrConstructeur(ERR_INDICES);
 		throw ErrConstructeur;
 	}
 	
-	return pMTPMatrice[uiIndiceLigne][uiIndiceColonne];
+	return pMATMTPMatrice[uiIndiceLigne][uiIndiceColonne];
 }
 
 /***********************************************************************************
@@ -190,13 +189,13 @@ template <class MType>
 void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement)
 {
 	// Gestion exception (indices invalides)
-	if(uiIndiceLigne > uiNbLignes || uiIndiceColonne > uiNbColonnes)
+	if(uiIndiceLigne > uiMATNbLignes || uiIndiceColonne > uiMATNbColonnes)
 	{
 		CException ErrIndices(ERR_INDICES);
 		throw ErrIndices;
 	}
 	
-	pMTPMatrice[uiIndiceLigne][uiIndiceColonne] = MTPElement;
+	pMATMTPMatrice[uiIndiceLigne][uiIndiceColonne] = MTPElement;
 }
 
 /***********************************************************************************
@@ -215,16 +214,16 @@ void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int 
 	// Libération de la mémoire
 	for(unsigned int uiBoucle = 0; uiBoucle < this->MATLireNbLignes(); uiBoucle++)
 	{
-		free(pMTPMatrice[uiBoucle]);
+		free(pMATMTPMatrice[uiBoucle]);
 	}
-	free(pMTPMatrice);
+	free(pMATMTPMatrice);
 	
 	// Allocation mémoire
-	pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
+	pMATMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
 	
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
-		pMTPMatrice[uiBoucle] = (MType *)calloc(uiNbColonnes, sizeof(MType));
+		pMATMTPMatrice[uiBoucle] = (MType *)calloc(uiNbColonnes, sizeof(MType));
 	}
 }
 
@@ -241,11 +240,11 @@ void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int 
 template <class MType>
 void CMatrice<MType>::MATModifierMatrice(MType ** pMTPMatriceArg)
 {
-	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
-			pMTPMatrice[uiBoucleL][uiBoucleC] = pMTPMatriceArg[uiBoucleL][uiBoucleC];
+			MATModifierElement(uiBoucleL, uiBoucleC, pMTPMatriceArg[uiBoucleL][uiBoucleC]);
 		}
 	}
 }
@@ -268,12 +267,12 @@ void CMatrice<MType>::MATModifierMatrice(MType ** pMTPMatriceArg)
 template <class MType> 
 void CMatrice<MType>::MATAfficher()
 {
-	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	cout.precision(DISPLAY_PRECISION);
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
-			cout.precision(DISPLAY_PRECISION);
-			cout << pMTPMatrice[uiBoucleL][uiBoucleC] << " ";
+			cout << pMATMTPMatrice[uiBoucleL][uiBoucleC] << " ";
 		}
 		cout << endl;
 	}
@@ -300,9 +299,9 @@ CMatrice<MType>& CMatrice<MType>::operator=(CMatrice<MType>& MATMatrice)
 	MATModifierNbColonnes(MATMatrice.MATLireNbColonnes());
 	
 	// Recopie des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
 			MATModifierElement(uiBoucleL, uiBoucleC, MATMatrice.MATLireElement(uiBoucleL, uiBoucleC));
 		}
@@ -328,9 +327,9 @@ CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 	CMatrice<MType> *MATNouveau = new CMatrice<MType>(*this);
 	
 	// Calcul des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
 			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, dNombre*MATNouveau->MATLireElement(uiBoucleL, uiBoucleC));
 		}
@@ -363,9 +362,9 @@ CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 	CMatrice<MType> *MATNouveau = new CMatrice<MType>(*this);
 	
 	// Calcul des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
 			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC)/dNombre);
 		}
@@ -388,14 +387,14 @@ template <class MType>
 CMatrice<MType>& CMatrice<MType>::MATTransposer()
 {
 	// Recopie de la matrice
-	CMatrice<MType> *MATNouveau = new CMatrice<MType>(uiNbColonnes, uiNbLignes);
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(uiMATNbColonnes, uiMATNbLignes);
 
 	// Calcul des valeurs
-	for(unsigned int uiBoucleL = 0; uiBoucleL < uiNbColonnes; uiBoucleL++)
+	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbColonnes; uiBoucleL++)
 	{
-		for(unsigned int uiBoucleC = 0; uiBoucleC < uiNbLignes; uiBoucleC++)
+		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbLignes; uiBoucleC++)
 		{
-			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, this->MATLireElement(uiBoucleC, uiBoucleL));
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATLireElement(uiBoucleC, uiBoucleL));
 		}
 	}
 	

@@ -8,8 +8,8 @@ using namespace std;
 /********* CONSTRUCTEURS *********/
 
 /** Constructeur de confort **/
-CException::CException(unsigned int uiEXCErreur){
-	this->uiEXCErreur = uiEXCErreur;
+CException::CException(unsigned int uiErreur){
+	EXCModifierErreur(uiErreur);
 }
 
 /*********************************/
@@ -20,9 +20,9 @@ unsigned int CException::EXCLireErreur()
 	return uiEXCErreur;
 }
 
-void CException::EXCModifierErreur(unsigned int uiEXCErreur)
+void CException::EXCModifierErreur(unsigned int uiErreur)
 {
-	this->uiEXCErreur = uiEXCErreur;
+	uiEXCErreur = uiErreur;
 }
 /********************************/
 

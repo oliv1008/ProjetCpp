@@ -3,12 +3,13 @@
 
 #include <iostream>
 #include <fstream>
+
 #include "header/CException.h"
 
 using namespace std;
 
 // Inclusion cyclique entre CMatrice et CParser
-// On prédéfini CMatrice pour le compilateur
+// On prédéfinit CMatrice pour le compilateur
 template<typename MType>
 class CMatrice;
 
@@ -20,7 +21,7 @@ class CParser {
 		static bool PARIsStringEqual(const char* pccStr1, const char* pccStr2);
 		static bool PARIsStringANumericalValue(const char * pcStr);
 
-		// Obligé de mettre la déclaration dans le .h car template de méthode
+		// Obligé de mettre la déclaration de PARParserMatrice dans le .h car c'est un template de méthode
 		
 		/***********************************************************************************
 		**** Nom: PARParserMatrice		                                                ****
