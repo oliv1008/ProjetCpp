@@ -10,6 +10,7 @@
 #define ERR_FORMAT 			5
 #define ERR_NUMERIQUE 		6
 #define ERR_DIMENSION 		7
+#define ERR_FICHIER			8
 
 class CException 
 {

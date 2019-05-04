@@ -4,10 +4,21 @@
 using namespace std;
 
 /*********** METHODES **********/
+
+/***********************************************************************************
+**** Nom: CMAAddition		                                                    ****
+************************************************************************************
+**** Fonction d'addition entre 2 matrices                                       ****
+************************************************************************************
+**** Précondition: taille de A = taille de B (sinon lève une exception)         ****
+**** Entrée: MATA : CMatrice<MType>, MATB : CMatrice<MType>                     ****
+**** Entraîne: Le calcul de MATA + MATB										    ****
+**** Sortie: CMatrice<MType>&													****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CCalculMatriciel<MType>::CMAAddition(CMatrice<MType> MATA, CMatrice<MType> MATB)
 {
-	// Gestion exception (divison par zero)
+	// Gestion exception (tailles des matrices différentes)
 	if(MATA.MATLireNbColonnes() != MATB.MATLireNbColonnes() || MATA.MATLireNbLignes() != MATB.MATLireNbLignes())
 	{
 		CException ErrTaille(ERR_TAILLE);
@@ -29,10 +40,20 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMAAddition(CMatrice<MType> MATA, CMat
 	return *MATNouveau;
 }
 
+/***********************************************************************************
+**** Nom: CMASoustraction		                                                ****
+************************************************************************************
+**** Fonction de soustraction entre 2 matrices                                  ****
+************************************************************************************
+**** Précondition: taille de A = taille de B (sinon lève une exception)         ****
+**** Entrée: MATA : CMatrice<MType>, MATB : CMatrice<MType>                     ****
+**** Entraîne: Le calcul de MATA - MATB										    ****
+**** Sortie: CMatrice<MType>&													****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CCalculMatriciel<MType>::CMASoustraction(CMatrice<MType> MATA, CMatrice<MType> MATB)
 {
-	// Gestion exception (divison par zero)
+	// Gestion exception (tailles des matrices différentes)
 	if(MATA.MATLireNbColonnes() != MATB.MATLireNbColonnes() || MATA.MATLireNbLignes() != MATB.MATLireNbLignes())
 	{
 		CException ErrTaille(ERR_TAILLE);
@@ -54,10 +75,20 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMASoustraction(CMatrice<MType> MATA, 
 	return *MATNouveau;
 }
 
+/***********************************************************************************
+**** Nom: CMAProduit			                                                ****
+************************************************************************************
+**** Fonction de produit entre 2 matrices		                                ****
+************************************************************************************
+**** Précondition: lignes de MATB = colonnes de A (sinon lève une exception)    ****
+**** Entrée: MATA : CMatrice<MType>, MATB : CMatrice<MType>                     ****
+**** Entraîne: Le calcul de MATA * MATB										    ****
+**** Sortie: CMatrice<MType>&													****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType>& CCalculMatriciel<MType>::CMAProduit(CMatrice<MType> MATA, CMatrice<MType> MATB)
 {
-	// Gestion exception (divison par zero)
+	// Gestion exception (taille des matrices incohérente)
 	if(MATB.MATLireNbLignes() != MATA.MATLireNbColonnes())
 	{
 		CException ErrTaille(ERR_TAILLE);

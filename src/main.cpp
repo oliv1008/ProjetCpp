@@ -21,7 +21,9 @@ int main(int argc, char **argv)
 		}
 		catch(CException EXCErreur) 
 		{
+			// Erreur dans le parser = erreur critique (on arrête l'exécution du programme)
 			EXCErreur.EXCAfficherErreur();
+			return -1;
 		}
 		
 		cout << " > M" << iBoucle << " = \n" << endl;
@@ -36,7 +38,7 @@ int main(int argc, char **argv)
 	cin >> c;
 	
 	// Multiplications par c
-	cout << "\n=== Multiplications par " << c << " ===" << endl;
+	cout << "\n===== Multiplications par " << c << " =====" << endl;
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
 		cout << "\n > M" << iBoucle+1 << " * " << c << " = \n" << endl;
@@ -44,7 +46,7 @@ int main(int argc, char **argv)
 	}
 	
 	// Divisions par c
-	cout << "\n=== Divisions par " << c << " ===" << endl;
+	cout << "\n===== Divisions par " << c << " =====" << endl;
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
 		cout << "\n > M" << iBoucle+1 << " / " << c << " = \n" << endl;
@@ -58,22 +60,22 @@ int main(int argc, char **argv)
 		}
 	}
 	
-	CMatrice<double> MATTemp(pMATTable[0]->MATLireNbLignes(), pMATTable[0]->MATLireNbColonnes());
+	CMatrice<double> result;	// Matrice temporaire utilisée pour stocker les resultats
 	
 	// Sommes des matrices
-	cout << "\n=== Somme des matrices ===" << endl;
+	cout << "\n====== Somme des matrices =======" << endl;
 	
 	try 
 	{
 		cout << "\n > M1";
-		MATTemp = *pMATTable[0];
+		result = *pMATTable[0];
 		for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
 		{
 			cout << " + M" << iBoucle+1;
-			MATTemp = MATTemp + *pMATTable[iBoucle];
+			result = result + *pMATTable[iBoucle];
 		}
 		cout << " = \n" << endl;
-		MATTemp.MATAfficher();
+		result.MATAfficher();
 	} 
 	catch(CException EXCErreur) 
 	{
@@ -86,22 +88,22 @@ int main(int argc, char **argv)
 	try 
 	{
 		cout << "\n > M1";
-		MATTemp = *pMATTable[0];
+		result = *pMATTable[0];
 		for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
 		{
 			if(iBoucle % 2 == 1)	// Indice impair
 			{
 				cout << " + M" << iBoucle+1;
-				MATTemp = MATTemp + *pMATTable[iBoucle];
+				result = result + *pMATTable[iBoucle];
 			}
-			else if(iBoucle % 2 == 0)					// Indice pair
+			else if(iBoucle % 2 == 0) // Indice pair
 			{
 				cout << " - M" << iBoucle+1;
-				MATTemp = MATTemp - *pMATTable[iBoucle];
+				result = result - *pMATTable[iBoucle];
 			}
 		}
 		cout << " = \n" << endl;
-		MATTemp.MATAfficher();
+		result.MATAfficher();
 	}
 	catch(CException EXCErreur) 
 	{
@@ -109,9 +111,7 @@ int main(int argc, char **argv)
 	}
 	
 	// Produits
-	cout << "\n=== Produits ===" << endl;
-	
-	CMatrice<double> result;
+	cout << "\n==== Produits entre matrices ====" << endl;
 		
 	for(int iBoucle1 = 0; iBoucle1 < argc-1; iBoucle1++)
 	{
@@ -129,6 +129,8 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+	
+	cout << "\n=================================" << endl;
 	
 	return 0;
 }

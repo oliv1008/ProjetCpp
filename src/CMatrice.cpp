@@ -72,37 +72,21 @@ CMatrice<MType>::CMatrice(const char *pcChemin)
 	unsigned int uiNbColonnes = 0;
 	MType **pMTPMatrice = nullptr;
 	
-	try
+	CParser::PARParserMatrice(pcChemin, uiNbLignes, uiNbColonnes, pMTPMatrice);
+		
+	// Initialisation lignes et colonnes
+	MATModifierNbLignes(uiNbLignes);
+	MATModifierNbColonnes(uiNbColonnes);
+		
+	// Allocation mémoire
+	this->pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
+	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 	{
-		CParser::PARParserMatrice(pcChemin, uiNbLignes, uiNbColonnes, pMTPMatrice);
-		
-		
-		// Initialisation lignes et colonnes
-		MATModifierNbLignes(uiNbLignes);
-		MATModifierNbColonnes(uiNbColonnes);
-		
-		// Allocation mémoire
-		this->pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
-		for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
-		{
-			this->pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
-		}
-		
-		MATModifierMatrice(pMTPMatrice);
+		this->pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
 	}
-	catch (CException EXCLevee)
-	{
-		EXCLevee.EXCAfficherErreur();
-		cerr << "Erreur création matrice à partir d'un fichier" << endl;
-		cerr << "Utilisation du constructeur par défaut" << endl;
-		// Initialisation lignes et colonnes
-		MATModifierNbLignes(1);
-		MATModifierNbColonnes(1);
 		
-		// Allocation mémoire
-		pMTPMatrice = (MType **)malloc(sizeof(MType *));
-		pMTPMatrice[0] = (MType *)malloc(sizeof(MType));
-		}
+	MATModifierMatrice(pMTPMatrice);
+
 }
 /********************************/
 
@@ -270,6 +254,7 @@ void CMatrice<MType>::MATModifierMatrice(MType ** pMTPMatriceArg)
 
 
 /*********** METHODES **********/
+
 /***********************************************************************************
 **** Nom: MATAfficher                                                           ****
 ************************************************************************************

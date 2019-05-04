@@ -38,6 +38,8 @@ void CException::EXCAfficherErreur()
 		case ERR_FORMAT : cerr << " Erreur : format de fichier non valide" << endl; break;
 		case ERR_NUMERIQUE : cerr << " Erreur : valeur non numérique" << endl; break;
 		case ERR_DIMENSION : cerr << "Erreur : erreur dans la dimension de la matrice" << endl; break;
+		case ERR_FICHIER : cerr << "Erreur : impossible de lire le fichier en paramètre" << endl; break;
+		default : cerr << "Erreur inconnue" << endl; break;
 	}
 }
 /********************************/

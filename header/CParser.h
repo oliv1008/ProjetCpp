@@ -7,16 +7,12 @@
 
 using namespace std;
 
-//Inclusion cyclique entre CMatrice et CParser
-//On prédéfini CMatrice pour le compilateur
+// Inclusion cyclique entre CMatrice et CParser
+// On prédéfini CMatrice pour le compilateur
 template<typename MType>
 class CMatrice;
 
 class CParser {
-
-	private :
-
-		
 
 	public :
 
@@ -24,58 +20,47 @@ class CParser {
 		static bool PARIsStringEqual(const char* pccStr1, const char* pccStr2);
 		static bool PARIsStringANumericalValue(const char * pcStr);
 
-		//Obligé de mettre la déclaration dans le .h car template de méthode
-		/************************************************
-		**** Nom: PARParserMatrice                   ****
-		*************************************************
-		****                                         ****
-		*************************************************
-		**** Précondition: pcChemin pointe vers une  ****
-		****    chaine de caractère valide (terminée ****
-		****    par '\0')                            ****
-		**** Entrée: pcChemin : const char *         ****
-		****    uiNbLignes : unsigned int &          ****
-		****    uiNbColonnes : unsigned int &        ****
-		****    pMTPMatrice : MType** &              ****
-		****                                         ****
-		**** Entraîne: Si pcChemin est un chemin     ****
-		****    valide vers un fichier et ce fichier ****
-		****    respecte le format demandé :         ****
-		****      uiNbLigne, uiNbColonnes et         ****
-		****    pMTPMatrice sont initialisées aux    ****
-		****    valeurs de la matrice contenu dans   ****
-		****    le fichier                           ****
-		****    Sinon :                              ****
-		****      La fonction renvoie une exception  ****
-		**** Sortie: Rien                            ****
-		************************************************/
-		template <class MType> static void PARParserMatrice(const char * pcChemin, unsigned int &uiNbLignes, unsigned int &uiNbColonnes, MType** &pMTPMatrice)
+		// Obligé de mettre la déclaration dans le .h car template de méthode
+		
+		/***********************************************************************************
+		**** Nom: PARParserMatrice		                                                ****
+		************************************************************************************
+		**** Fonction utilisée pour lire une matrice depuis un fichier texte            ****
+		************************************************************************************
+		**** Précondition: pcChemin pointe vers une chaine de caractère valide,         ****
+		****	           représentant un fichier existant, qui respecte le bon format	**** 
+		**** Entrée: pcChemin : const char*, uiNbLignes : unsigned int &                ****
+		****		 uiNbColonnes : unsigned int &, pMTPMatrice : MType** &				**** 
+		**** Entraîne: l'initialisation de uiNbLignes, uiNbColonnes	 et pMTPMatrice	aux	****
+		****		   valeurs contenues dans le fichier								**** 
+		**** Sortie: Rien																****
+		***********************************************************************************/
+		template <class MType> 
+		static void PARParserMatrice(const char * pcChemin, unsigned int &uiNbLignes, unsigned int &uiNbColonnes, MType** &pMTPMatrice)
 		{
-			ifstream fichier(pcChemin, ios::in);  // on ouvre le fichier en lecture
+			ifstream fichier(pcChemin, ios::in);  // On ouvre le fichier en lecture seule
  
-			if(fichier)  // si l'ouverture a réussi
+			if(fichier)  // Si l'ouverture a réussi
 			{       
-				// instructions
 				char ligne[256];
 				char resultat[256];
 				
-				//On récupère le type de la matrice
+				// On récupère le type de la matrice
 				fichier >> ligne;
-				//cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
-				//On vérifie qu'il est valide
+				// On vérifie qu'il est valide
 				if (!CParser::PARIsStringEqual(ligne, "TypeMatrice") || !CParser::PARIsStringEqual(resultat, "double"))
 				{
 					CException ErrFormat(ERR_FORMAT);
 					throw ErrFormat;
 				}
 				
-				//On récupère le nombre de lignes
+				// On récupère le nombre de lignes
 				fichier >> ligne;
-				//cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
+				// On vérifie qu'il est valide
 				if (!CParser::PARIsStringEqual(ligne, "NBLignes"))
 				{
 					CException ErrFormat(ERR_FORMAT);
@@ -89,11 +74,11 @@ class CParser {
 
 				uiNbLignes = atoi(resultat);
 				
-				//On récupère le nombre de colonnes
+				// On récupère le nombre de colonnes
 				fichier >> ligne;
-				//cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
+				// On vérifie qu'il est valide
 				if (!CParser::PARIsStringEqual(ligne, "NBColonnes"))
 				{
 					CException ErrFormat(ERR_FORMAT);
@@ -105,12 +90,10 @@ class CParser {
 					throw ErrNumerique;
 				}
 				
-		
 				uiNbColonnes = atoi(resultat);
 			
-				//On saute la ligne "Matrice=["
+				// On vérifie que la ligne "Matrice=[" est valide
 				fichier >> ligne;
-				//cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "Matrice=["))
 				{
 					CException ErrFormat(ERR_FORMAT);
@@ -118,7 +101,7 @@ class CParser {
 				}
 				
 	
-				//On remplit la matrice
+				// On remplit la matrice (tableau 2D)
 				pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
 				for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
 				{
@@ -129,9 +112,10 @@ class CParser {
 				{
 					for (unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
 					{
-						//On récupère l'élement
+						// On récupère l'élement
 						fichier >> ligne;
-						//cout << ligne << endl;
+
+						// On vérifie qu'il est valide
 						if (CParser::PARIsStringEqual(ligne, "]"))
 						{
 							CException ErrDimension(ERR_DIMENSION);
@@ -148,18 +132,18 @@ class CParser {
 				}
 				
 				fichier >> ligne;
-				//cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "]"))
 				{
 					CException ErrDimension(ERR_DIMENSION);
 					throw ErrDimension;
 				}
 
-				fichier.close();  // on ferme le fichier
+				fichier.close();  // On ferme le fichier
 			}
-			else  // sinon
+			else // Impossible d'ouvrir le fichier
 			{
-				cerr << "Impossible d'ouvrir le fichier !" << endl;
+				CException ErrFichier(ERR_FICHIER);
+				throw ErrFichier;
 			}
 		}
 };
