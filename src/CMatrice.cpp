@@ -4,8 +4,6 @@
 #include <iostream>
 #include <cstdlib>
 
-#include "header/CCalculMatriciel.h"
-
 #define DISPLAY_PRECISION 3		// Précision (nombre de chiffres après la virgule) de l'affichage de matrices
 
 using namespace std;
@@ -21,7 +19,7 @@ CMatrice<MType>::CMatrice()
 	
 	// Allocation mémoire
 	pMATMTPMatrice = (MType **)malloc(sizeof(MType *));
-	pMATMTPMatrice[0] = (MType *)calloc(1, sizeof(MType));
+	pMATMTPMatrice[0] = (MType *)calloc(1, sizeof(MType));	// [!] On utilise calloc pour initialiser la matrice avec des valeurs nulles
 }
 
 /** Constructeur de confort **/
@@ -87,7 +85,13 @@ CMatrice<MType>::CMatrice(const char *pcChemin)
 	}
 		
 	MATModifierMatrice(pMTPMatrice);
-
+	
+	// Libération mémoire
+	for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
+	{
+		free(pMTPMatrice[uiBoucle]);
+	}
+	free(pMTPMatrice);
 }
 /********************************/
 
@@ -95,6 +99,7 @@ CMatrice<MType>::CMatrice(const char *pcChemin)
 template <class MType>
 CMatrice<MType>::~CMatrice()
 {
+	// Libération mémoire
 	for(unsigned int uiBoucle = 0; uiBoucle < uiMATNbLignes; uiBoucle++)
 	{
 		free(pMATMTPMatrice[uiBoucle]);
@@ -249,7 +254,7 @@ void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int 
 template <class MType>
 void CMatrice<MType>::MATModifierMatrice(MType **pMTPMatriceArg)
 {
-	
+	// Recopie des valeurs de pMTPMatriceArg dans pMATMTPMatricce
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
@@ -282,7 +287,7 @@ void CMatrice<MType>::MATAfficher()
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
-			cout << pMATMTPMatrice[uiBoucleL][uiBoucleC] << " ";
+			cout << MATLireElement(uiBoucleL, uiBoucleC) << " ";
 		}
 		cout << endl;
 	}
@@ -341,7 +346,7 @@ CMatrice<MType>& CMatrice<MType>::operator*(double dNombre)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
-			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, dNombre*MATNouveau->MATLireElement(uiBoucleL, uiBoucleC));
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, dNombre * MATNouveau->MATLireElement(uiBoucleL, uiBoucleC));
 		}
 	}
 	
@@ -376,7 +381,7 @@ CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)
 		{
-			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC)/dNombre);
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, MATNouveau->MATLireElement(uiBoucleL, uiBoucleC) / dNombre);
 		}
 	}
 	
@@ -390,7 +395,7 @@ CMatrice<MType>& CMatrice<MType>::operator/(double dNombre)
 ************************************************************************************
 **** Précondition: Rien                                                         ****
 **** Entrée: Rien                                                               ****
-**** Entraîne: La transposition de la matrice qui appelle la fonction           ****
+**** Entraîne: La transposée de la matrice qui appelle la fonction  	        ****
 **** Sortie: CMatrice<MType>&                                                   ****
 ***********************************************************************************/
 template <class MType>
