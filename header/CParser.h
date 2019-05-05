@@ -10,8 +10,8 @@ using namespace std;
 
 // Inclusion cyclique entre CMatrice et CParser
 // On prédéfinit CMatrice pour le compilateur
-template<typename MType>
-class CMatrice;
+//template<typename MType>
+//class CMatrice;
 
 class CParser {
 

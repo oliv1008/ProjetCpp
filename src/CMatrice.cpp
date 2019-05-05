@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "header/CCalculMatriciel.h"
+
 #define DISPLAY_PRECISION 3		// Précision (nombre de chiffres après la virgule) de l'affichage de matrices
 
 using namespace std;
@@ -203,7 +205,7 @@ void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned in
 ************************************************************************************
 **** Permet de réallouer une matrice existante à une nouvelle taille            ****
 ************************************************************************************
-**** Précondition: Rien														    ****
+**** Précondition: uiNbLignes > 0 et uiNbColonnes > 0 (sinon exception)			****
 **** Entrée: uiNbLignes : unsigned int, uiNbColonnes : unsigned int             ****
 **** Entraîne: Une réallocation du tableau 2D contenu dans la matrice           ****
 **** Sortie: Rien                                                               ****
@@ -211,6 +213,13 @@ void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned in
 template <class MType>
 void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes)
 {	
+	// Gestion exception (dimension nulle)
+	if(uiNbLignes == 0 || uiNbColonnes == 0)
+	{
+		CException ErrConstructeur(ERR_CONSTRUCTEUR);
+		throw ErrConstructeur;
+	}
+	
 	// Libération de la mémoire
 	for(unsigned int uiBoucle = 0; uiBoucle < this->MATLireNbLignes(); uiBoucle++)
 	{
@@ -238,8 +247,9 @@ void CMatrice<MType>::MATReallouerMatrice(unsigned int uiNbLignes, unsigned int 
 **** Sortie: Rien                                                               ****
 ***********************************************************************************/
 template <class MType>
-void CMatrice<MType>::MATModifierMatrice(MType ** pMTPMatriceArg)
+void CMatrice<MType>::MATModifierMatrice(MType **pMTPMatriceArg)
 {
+	
 	for(unsigned int uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
 	{
 		for(unsigned int uiBoucleC = 0; uiBoucleC < uiMATNbColonnes; uiBoucleC++)

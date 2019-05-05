@@ -107,7 +107,7 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMAProduit(CMatrice<MType> MATA, CMatr
 			{
 				double dResultat = MATNouveau->MATLireElement(uiBoucleL, uiBoucleC) + MATA.MATLireElement(uiBoucleL, uiBoucleK) * MATB.MATLireElement(uiBoucleK, uiBoucleC);
 				// Arrondi du resultat, dans les cas où on obtient un nombre proche de 0 (du type e-300)
-				if(dResultat < 0.0000000001)	
+				if(dResultat < 0.000000000001)	
 					dResultat = 0;
 				
 				MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, dResultat);

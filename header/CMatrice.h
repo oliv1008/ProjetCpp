@@ -49,7 +49,6 @@ template <class MType> class CMatrice
 
 #include "header/CParser.h"
 #include "header/CException.h"
-#include "header/CCalculMatriciel.h"
 #include "src/CMatrice.cpp"
 
 #endif
