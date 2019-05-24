@@ -3,7 +3,6 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
-    <File Name="src/main.cpp"/>
     <File Name="src/CCalculMatriciel.cpp" ExcludeProjConfig="Debug"/>
     <File Name="src/CMatrice.cpp" ExcludeProjConfig="Debug"/>
     <File Name="src/CParser.cpp" ExcludeProjConfig=""/>
@@ -14,6 +13,7 @@
     <File Name="header/CCalculMatriciel.h"/>
     <File Name="header/CParser.h"/>
     <File Name="header/CException.h"/>
+    <File Name="src/main.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
