@@ -44,124 +44,13 @@ int main(int argc, char **argv)
 		cout << endl;
 	}
 	
-	
-	/***** Demande de c à l'utilisateur *********************************/
-	double c;
-	cout << "### Saississez une valeur : ";
-	cin >> c;
-	
 	/***** Multiplications par c ****************************************/
-	cout << "\n===== Multiplications par " << c << " =====" << endl;
+	cout << "\n===== Matrices des cofacteurs =====" << endl;
 	
-	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
-	{
-		cout << "\n > M" << iBoucle+1 << " * " << c << " = \n" << endl;
-		(*pMATTable[iBoucle] * c).MATAfficher();
-	}
 	
-	/***** Divisions par c **********************************************/
-	cout << "\n===== Divisions par " << c << " =====" << endl;
+
 	
-	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
-	{
-		cout << "\n > M" << iBoucle+1 << " / " << c << " = \n" << endl;
-		try 
-		{
-			(*pMATTable[iBoucle] / c).MATAfficher();
-		} 
-		catch(CException EXCErreur) 
-		{
-			switch(EXCErreur.EXCLireErreur())
-			{
-				case ERR_ZERO_DIV : cerr << " Erreur : division par zéro impossible" << endl; break;
-				default : cerr << "Erreur inconnue" << endl; return -1;
-			}
-		}
-	}
-	
-	CMatrice<double> result;	// Matrice temporaire utilisée pour stocker les resultats
-	
-	/***** Sommes des matrices *******************************************/
-	cout << "\n====== Somme des matrices =======" << endl;
-	
-	try 
-	{
-		cout << "\n > M1";
-		result = *pMATTable[0];		// On initialise result à la valeur de la première matrice
-		for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
-		{
-			cout << " + M" << iBoucle+1;
-			result = result + *pMATTable[iBoucle];
-		}
-		cout << " = \n" << endl;
-		result.MATAfficher();
-	} 
-	catch(CException EXCErreur) 
-	{
-		switch(EXCErreur.EXCLireErreur())
-		{
-			case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
-			default : cerr << "Erreur inconnue" << endl; return -1;
-		}
-	}
-	
-	/***** Alternance addition/soustraction *******************************/
-	cout << "\n=== Alternance addition/soustraction ===" << endl;
-	
-	try 
-	{
-		cout << "\n > M1";
-		result = *pMATTable[0];		// On initialise result à la valeur de la première matrice
-		for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
-		{
-			if(iBoucle % 2 == 1)	// Indice impair (+)
-			{
-				cout << " + M" << iBoucle+1;
-				result = result + *pMATTable[iBoucle];
-			}
-			else if(iBoucle % 2 == 0) // Indice pair (-)
-			{
-				cout << " - M" << iBoucle+1;
-				result = result - *pMATTable[iBoucle];
-			}
-		}
-		cout << " = \n" << endl;
-		result.MATAfficher();
-	}
-	catch(CException EXCErreur) 
-	{
-		switch(EXCErreur.EXCLireErreur())
-		{
-			case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
-			default : cerr << "Erreur inconnue" << endl; return -1;
-		}
-	}
-	
-	/***** Produits entre matrices ****************************************/
-	cout << "\n==== Produits entre matrices ====" << endl;
-	
-	for(int iBoucle1 = 0; iBoucle1 < argc-1; iBoucle1++)
-	{
-		for(int iBoucle2 = 0; iBoucle2 < argc-1; iBoucle2++)
-		{
-			cout << "\n > M" << iBoucle1+1 << " * M" << iBoucle2+1 << " = \n" << endl;
-			try 
-			{
-				result = (*pMATTable[iBoucle1]) * (*pMATTable[iBoucle2]);
-				result.MATAfficher();
-			}
-			catch(CException EXCErreur) 
-			{
-				switch(EXCErreur.EXCLireErreur())
-				{
-					case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
-					default : cerr << "Erreur inconnue" << endl; return -1;
-				}
-			}
-		}
-	}
-	
-	cout << "\n=================================" << endl;
+	cout << "\n===================================" << endl;
 	
 	return 0;
 }

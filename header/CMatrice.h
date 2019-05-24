@@ -51,6 +51,8 @@ template <class MType> class CMatrice
 		
 		void MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes);
 		void MATModifierMatrice(MType ** pMTPMatriceArg);
+		
+		double MATCalculDeterminant();
 };
 
 #include "header/CParser.h"

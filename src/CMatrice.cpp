@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <math.h>
 
 #define DISPLAY_PRECISION 3		// Précision (nombre de chiffres après la virgule) de l'affichage de matrices
 
@@ -451,6 +452,29 @@ CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType> MATB)
 {
 	return CCalculMatriciel<MType>::CMAProduit(*this, MATB);
 }
+
+
+template <class MType>
+double CMatrice<MType>::MATCalculDeterminant()
+{
+	double dDeterminant = 0;
+	unsigned int uiBoucleL = 0, uiBoucleC = 0;
+	
+	// Si la matrice est de taille 1x1, le déterminant est égal à son unique élément
+	if(uiMATNbLignes == 1 && uiMATNbColonnes == 1)
+	{
+		dDeterminant = MATLireElement(0, 0);
+	}
+	else
+	{
+		for(uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
+		{					// (-1)^(i+j) avec i=uiBoucleL et j=1
+			dDeterminant += pow((-1), (uiBoucleL + 1) + 1) * MATCalculDeterminant(CCalculMatriciel<MType>::CMAExtraireSousMatrice(uiBoucleL, 0));
+		}
+	}
+	return dDeterminant;
+}
+
 /*******************************/
 
 #endif

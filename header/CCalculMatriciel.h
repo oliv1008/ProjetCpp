@@ -12,6 +12,8 @@ template <class MType> class CCalculMatriciel
 		static CMatrice<MType>& CMASoustraction(CMatrice<MType> MATA, CMatrice<MType> MATB);
 		static CMatrice<MType>& CMAProduit(CMatrice<MType> MATA, CMatrice<MType> MATB);
 		
+		static CMatrice<MType>& CMACalculMatriceCofacteurs(CMatrice<MType> MATMatrice);
+		
 };
 
 #include "header/CException.h"

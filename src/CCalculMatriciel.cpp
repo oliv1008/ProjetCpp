@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <math.h>
 
 using namespace std;
 
@@ -117,4 +118,34 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMAProduit(CMatrice<MType> MATA, CMatr
 	
 	return *MATNouveau;
 }
+
+template <class MType>
+CMatrice<MType>& CCalculMatriciel<MType>::CMACalculMatriceCofacteurs(CMatrice<MType> MATMatrice)
+{
+	unsigned int uiBoucleL = 0, uiBoucleC = 0;
+	
+	// Gestion exceptions (matrice non carrée)
+	if(MATMatrice.MATLireNbLignes() != MATMatrice.MATLireNbColonnes())
+	{
+		CException ErrTaille(ERR_TAILLE);
+		throw ErrTaille;
+	}
+	
+	// Allocation d'une nouvelle matrice
+	CMatrice<MType> *MATNouveau = new CMatrice<MType>(MATMatrice.MATLireNbLignes(), MATMatrice.MATLireNbColonnes());
+	
+	// Calcul des valeurs
+	for(uiBoucleL = 0; uiBoucleL < MATNouveau->MATLireNbLignes(); uiBoucleL++)
+	{
+		for(uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
+		{
+			// C(i,j) = (-1)^(i+j) * det(sousMatrice(i, j))
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, pow((-1), uiBoucleL + uiBoucleC + 2) * CMAExtraireSousMatrice(uiBoucleL, uiBoucleC).MATCalculDeterminant());
+		}
+	}
+	
+	return *MATNouveau;
+}
+
+
 /*******************************/
