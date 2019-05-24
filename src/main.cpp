@@ -47,8 +47,14 @@ int main(int argc, char **argv)
 	/***** Multiplications par c ****************************************/
 	cout << "\n===== Matrices des cofacteurs =====" << endl;
 	
-	
-
+	for (unsigned int uiBoucleL = 0; uiBoucleL < pMATTable[0]->MATLireNbLignes(); uiBoucleL++)
+	{
+		for (unsigned int uiBoucleC = 0; uiBoucleC < pMATTable[0]->MATLireNbColonnes(); uiBoucleC++)
+		{
+			CCalculMatriciel<double>::CMAExtraireSousMatrice(*pMATTable[0], uiBoucleL, uiBoucleC).MATAfficher();
+			cout << endl;
+		}
+	}
 	
 	cout << "\n===================================" << endl;
 	

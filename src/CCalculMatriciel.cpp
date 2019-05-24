@@ -147,5 +147,39 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMACalculMatriceCofacteurs(CMatrice<MT
 	return *MATNouveau;
 }
 
-
+template <class MType>
+CMatrice<MType> CCalculMatriciel<MType>::CMAExtraireSousMatrice(CMatrice<MType> MATA, unsigned int uiIndiceLigneMATA, unsigned int uiIndiceColonneMATA)
+{
+	CMatrice<double> MATB(MATA.MATLireNbLignes() - 1, MATA.MATLireNbColonnes() - 1);
+	unsigned int uiIndiceLigneMATB = 0;
+	unsigned int uiIndiceColonneMATB = 0;
+	unsigned int uiBoucleL = 0;
+	unsigned int uiBoucleC = 0;
+	
+	if (uiIndiceLigneMATA == 0)
+	{
+			uiBoucleL = 1;
+	}
+	for (uiBoucleL = uiBoucleL; uiBoucleL < MATA.MATLireNbLignes(); uiBoucleL++)
+	{
+		for (uiBoucleC = 0; uiBoucleC < MATA.MATLireNbColonnes(); uiBoucleC++)
+		{
+			if (uiBoucleC != uiIndiceColonneMATA)
+			{
+				MATB.MATModifierElement(uiIndiceLigneMATB, uiIndiceColonneMATB, MATA.MATLireElement(uiBoucleL, uiBoucleC));
+				uiIndiceColonneMATB++;
+			}
+		}
+		
+		if ((uiBoucleL + 1) == uiIndiceLigneMATA)
+		{
+			uiBoucleL++;
+		}
+	
+		uiIndiceLigneMATB++;
+		uiIndiceColonneMATB = 0;
+	}
+	
+	return MATB;
+}
 /*******************************/
