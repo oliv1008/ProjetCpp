@@ -1,16 +1,6 @@
 #ifndef CEXCEPTION
 #define CEXCEPTION
 
-#include <iostream>
-
-#define ERR_CONSTRUCTEUR 	1
-#define ERR_INDICES			2
-#define ERR_ZERO_DIV		3
-#define ERR_TAILLE 			4
-#define ERR_FORMAT 			5
-#define ERR_NUMERIQUE 		6
-#define ERR_DIMENSION 		7
-
 class CException 
 {
 	private :
@@ -19,15 +9,12 @@ class CException
 		
 	public :
 	
-		// Constructeurs
-		CException(unsigned int uiEXCErreur);
+		// Constructeur
+		CException(unsigned int uiErreur);
 		
 		// Accesseurs
 		unsigned int EXCLireErreur();
-		void EXCModifierErreur(unsigned int uiEXCErreur);
-		
-		// Méthodes
-		void EXCAfficherErreur();
+		void EXCModifierErreur(unsigned int uiErreur);
 };
 
 #endif

@@ -7,101 +7,139 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-	// Allocation de argc-1 matrices
+	if(argc == 1)
+	{
+		cerr << " Erreur : le programme doit être lancé avec au moins un fichier en paramètre" << endl;
+		return -1;
+	}
+	
+	/***** Allocation des matrices *********************************************/
 	cout << "### Allocation de " << argc-1 << " matrices..." << endl;
 	CMatrice<double> **pMATTable = (CMatrice<double> **)malloc((argc-1)*sizeof(CMatrice<double> *));
 	
-	// Création des matrices à partir des fichiers passés en arguments
-	cout << "### Création des " << argc-1 << " matrices..." << endl;
+	/***** Création des matrices à partir des fichiers passés en arguments *****/
+	cout << "### Création des " << argc-1 << " matrices...\n" << endl;
 	for(int iBoucle = 1; iBoucle < argc; iBoucle++)
 	{
-		pMATTable[iBoucle-1] = new CMatrice<double>(argv[iBoucle]);
+		try 
+		{
+			pMATTable[iBoucle-1] = new CMatrice<double>(argv[iBoucle]);
+		}
+		catch(CException EXCErreur) 
+		{
+			// Erreur dans le parser = erreur critique (on arrête l'exécution du programme)
+			switch(EXCErreur.EXCLireErreur())
+			{
+				case ERR_FORMAT : cerr << " Erreur : format de fichier non valide" << endl; break;
+				case ERR_NUMERIQUE : cerr << " Erreur : valeur non numérique" << endl; break;
+				case ERR_DIMENSION : cerr << "Erreur : erreur dans la dimension de la matrice" << endl; break;
+				case ERR_FICHIER : cerr << "Erreur : impossible de lire le fichier en paramètre" << endl; break;
+				default : cerr << "Erreur inconnue" << endl; break;
+			}
+			return -1;
+		}
+		
 		cout << " > M" << iBoucle << " = \n" << endl;
 		pMATTable[iBoucle-1]->MATAfficher();
 		cout << endl;
 	}
 	
 	
-	// Demande de c
+	/***** Demande de c à l'utilisateur *********************************/
 	double c;
 	cout << "### Saississez une valeur : ";
 	cin >> c;
 	
-	// Multiplications par c
-	cout << "\n=== Multiplications par " << c << " ===" << endl;
+	/***** Multiplications par c ****************************************/
+	cout << "\n===== Multiplications par " << c << " =====" << endl;
+	
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
 		cout << "\n > M" << iBoucle+1 << " * " << c << " = \n" << endl;
 		(*pMATTable[iBoucle] * c).MATAfficher();
 	}
 	
-	// Divisions par c
-	cout << "\n=== Divisions par " << c << " ===" << endl;
+	/***** Divisions par c **********************************************/
+	cout << "\n===== Divisions par " << c << " =====" << endl;
+	
 	for(int iBoucle = 0; iBoucle < argc-1; iBoucle++)
 	{
 		cout << "\n > M" << iBoucle+1 << " / " << c << " = \n" << endl;
-		try {
+		try 
+		{
 			(*pMATTable[iBoucle] / c).MATAfficher();
-		} catch(CException EXCErreur) {
-			EXCErreur.EXCAfficherErreur();
+		} 
+		catch(CException EXCErreur) 
+		{
+			switch(EXCErreur.EXCLireErreur())
+			{
+				case ERR_ZERO_DIV : cerr << " Erreur : division par zéro impossible" << endl; break;
+				default : cerr << "Erreur inconnue" << endl; return -1;
+			}
 		}
 	}
 	
-	CMatrice<double> MATTemp(pMATTable[0]->MATLireNbLignes(), pMATTable[0]->MATLireNbColonnes());
+	CMatrice<double> result;	// Matrice temporaire utilisée pour stocker les resultats
 	
-	// Sommes des matrices
-	cout << "\n=== Somme des matrices ===" << endl;
+	/***** Sommes des matrices *******************************************/
+	cout << "\n====== Somme des matrices =======" << endl;
 	
 	try 
 	{
 		cout << "\n > M1";
-		MATTemp = *pMATTable[0];
+		result = *pMATTable[0];		// On initialise result à la valeur de la première matrice
 		for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
 		{
 			cout << " + M" << iBoucle+1;
-			MATTemp = MATTemp + *pMATTable[iBoucle];
+			result = result + *pMATTable[iBoucle];
 		}
 		cout << " = \n" << endl;
-		MATTemp.MATAfficher();
+		result.MATAfficher();
 	} 
 	catch(CException EXCErreur) 
 	{
-		EXCErreur.EXCAfficherErreur();
+		switch(EXCErreur.EXCLireErreur())
+		{
+			case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
+			default : cerr << "Erreur inconnue" << endl; return -1;
+		}
 	}
 	
-	// Alternance addition/soustraction
+	/***** Alternance addition/soustraction *******************************/
 	cout << "\n=== Alternance addition/soustraction ===" << endl;
 	
 	try 
 	{
 		cout << "\n > M1";
-		MATTemp = *pMATTable[0];
+		result = *pMATTable[0];		// On initialise result à la valeur de la première matrice
 		for(int iBoucle = 1; iBoucle < argc-1; iBoucle++)
 		{
-			if(iBoucle % 2 == 1)	// Indice impair
+			if(iBoucle % 2 == 1)	// Indice impair (+)
 			{
 				cout << " + M" << iBoucle+1;
-				MATTemp = MATTemp + *pMATTable[iBoucle];
+				result = result + *pMATTable[iBoucle];
 			}
-			else if(iBoucle % 2 == 0)					// Indice pair
+			else if(iBoucle % 2 == 0) // Indice pair (-)
 			{
 				cout << " - M" << iBoucle+1;
-				MATTemp = MATTemp - *pMATTable[iBoucle];
+				result = result - *pMATTable[iBoucle];
 			}
 		}
 		cout << " = \n" << endl;
-		MATTemp.MATAfficher();
+		result.MATAfficher();
 	}
 	catch(CException EXCErreur) 
 	{
-		EXCErreur.EXCAfficherErreur();
+		switch(EXCErreur.EXCLireErreur())
+		{
+			case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
+			default : cerr << "Erreur inconnue" << endl; return -1;
+		}
 	}
 	
-	// Produits
-	cout << "\n=== Produits ===" << endl;
+	/***** Produits entre matrices ****************************************/
+	cout << "\n==== Produits entre matrices ====" << endl;
 	
-		CMatrice<double> result;
-		
 	for(int iBoucle1 = 0; iBoucle1 < argc-1; iBoucle1++)
 	{
 		for(int iBoucle2 = 0; iBoucle2 < argc-1; iBoucle2++)
@@ -114,11 +152,16 @@ int main(int argc, char **argv)
 			}
 			catch(CException EXCErreur) 
 			{
-				EXCErreur.EXCAfficherErreur();
+				switch(EXCErreur.EXCLireErreur())
+				{
+					case ERR_TAILLE : cerr << " Erreur : tailles des matrices incohérentes" << endl; break;
+					default : cerr << "Erreur inconnue" << endl; return -1;
+				}
 			}
 		}
 	}
 	
+	cout << "\n=================================" << endl;
+	
 	return 0;
 }
-

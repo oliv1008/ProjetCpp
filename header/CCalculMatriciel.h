@@ -1,7 +1,8 @@
 #ifndef CCALCULMATRICIEL
 #define CCALCULMATRICIEL
 
-#include "header/CMatrice.h"
+// Codes exceptions
+#define ERR_TAILLE	4
 
 template <class MType> class CCalculMatriciel
 {
@@ -13,6 +14,7 @@ template <class MType> class CCalculMatriciel
 		
 };
 
+#include "header/CException.h"
 #include "src/CCalculMatriciel.cpp"
 
 #endif

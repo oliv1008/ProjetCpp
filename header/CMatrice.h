@@ -1,14 +1,19 @@
 #ifndef CMATRICE
 #define CMATRICE
 
+// Codes exceptions
+#define ERR_CONSTRUCTEUR 	1
+#define ERR_INDICES			2
+#define ERR_ZERO_DIV		3
+
 template <class MType> class CMatrice
 {
 
 	private :
 
-		unsigned int uiNbLignes;
-		unsigned int uiNbColonnes;
-		MType **pMTPMatrice = nullptr;
+		unsigned int uiMATNbLignes;
+		unsigned int uiMATNbColonnes;
+		MType **pMATMTPMatrice = nullptr;
 
 	public :
 
@@ -19,7 +24,7 @@ template <class MType> class CMatrice
 		CMatrice(const char *pcChemin);
 
 		// Destructeur
-		//~CMatrice();
+		~CMatrice();
 
 		// Accesseurs
 		unsigned int MATLireNbLignes();
@@ -30,8 +35,6 @@ template <class MType> class CMatrice
 		
 		MType MATLireElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne);
 		void MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTPElement);
-		void MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes);
-		void MATModifierMatrice(MType ** pMTPMatriceArg);
 
 		// Méthodes et surcharges d'opérateurs
 		CMatrice<MType>& operator=(CMatrice<MType>& MATMatrice);
@@ -45,10 +48,14 @@ template <class MType> class CMatrice
 		CMatrice<MType>& MATTransposer();
 	
 		void MATAfficher();
+		
+		void MATReallouerMatrice(unsigned int uiNbLignes, unsigned int uiNbColonnes);
+		void MATModifierMatrice(MType ** pMTPMatriceArg);
 };
 
 #include "header/CParser.h"
 #include "header/CException.h"
+#include "header/CCalculMatriciel.h"
 #include "src/CMatrice.cpp"
 
 #endif
