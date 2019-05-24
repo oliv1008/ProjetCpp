@@ -44,19 +44,29 @@ int main(int argc, char **argv)
 		cout << endl;
 	}
 	
-	/***** Multiplications par c ****************************************/
-	cout << "\n===== Matrices des cofacteurs =====" << endl;
+	cout << "\n===== Matrices des cofacteurs =====\n" << endl;
 	
-	for (unsigned int uiBoucleL = 0; uiBoucleL < pMATTable[0]->MATLireNbLignes(); uiBoucleL++)
+	int iBoucle = 0;
+	for(iBoucle = 0; iBoucle < argc - 1; iBoucle++)
 	{
-		for (unsigned int uiBoucleC = 0; uiBoucleC < pMATTable[0]->MATLireNbColonnes(); uiBoucleC++)
+		try
 		{
-			CCalculMatriciel<double>::CMAExtraireSousMatrice(*pMATTable[0], uiBoucleL, uiBoucleC).MATAfficher();
-			cout << endl;
+			CCalculMatriciel<double>::CMACalculMatriceCofacteurs(*pMATTable[iBoucle]).MATAfficher();
+		}
+		catch(CException EXCErreur)
+		{
+			switch(EXCErreur.EXCLireErreur())
+			{
+				case ERR_CONSTRUCTEUR : cerr << " Erreur : taille nulle" << endl; break;
+				case ERR_INDICES : cerr << " Erreur : indices incohérents" << endl; break;
+				case ERR_TAILLE : cerr << "Erreur : taille de matrice non valide" << endl; break;
+				default : cerr << "Erreur inconnue" << endl; break;
+			}
+			return -1;
 		}
 	}
 	
-	cout << "\n===================================" << endl;
+	cout << "\n===================================\n" << endl;
 	
 	return 0;
 }

@@ -140,7 +140,7 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMACalculMatriceCofacteurs(CMatrice<MT
 		for(uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
 		{
 			// C(i,j) = (-1)^(i+j) * det(sousMatrice(i, j))
-			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, pow((-1), uiBoucleL + uiBoucleC + 2) * CMAExtraireSousMatrice(uiBoucleL, uiBoucleC).MATCalculDeterminant());
+			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, pow((-1), uiBoucleL + uiBoucleC + 2) * CMAExtraireSousMatrice(MATMatrice, uiBoucleL, uiBoucleC).MATCalculDeterminant());
 		}
 	}
 	
@@ -155,6 +155,13 @@ CMatrice<MType> CCalculMatriciel<MType>::CMAExtraireSousMatrice(CMatrice<MType> 
 	unsigned int uiIndiceColonneMATB = 0;
 	unsigned int uiBoucleL = 0;
 	unsigned int uiBoucleC = 0;
+	
+	// Gestion exception (indices invalides)
+	if(uiIndiceLigneMATA > MATA.MATLireNbLignes() || uiIndiceColonneMATA > MATA.MATLireNbColonnes())
+	{
+		CException ErrIndices(ERR_INDICES);
+		throw ErrIndices;
+	}
 	
 	if (uiIndiceLigneMATA == 0)
 	{
