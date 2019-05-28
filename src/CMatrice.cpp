@@ -453,7 +453,16 @@ CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType> MATB)
 	return CCalculMatriciel<MType>::CMAProduit(*this, MATB);
 }
 
-
+/***********************************************************************************
+**** Nom: MATCalculDeterminant					                                ****
+************************************************************************************
+**** Calcule le déterminant d'une matrice carrée				                ****
+************************************************************************************
+**** Précondition: la matrice est carrée (nb. lignes = nb. colonnes)			****
+**** Entrée: Rien									                   		    ****
+**** Entraîne: Rien																****
+**** Sortie: double (le déterminant de la matrice qui appelle la fonction)		****
+***********************************************************************************/
 template <class MType>
 double CMatrice<MType>::MATCalculDeterminant()
 {
@@ -477,7 +486,7 @@ double CMatrice<MType>::MATCalculDeterminant()
 	else
 	{
 		for(uiBoucleL = 0; uiBoucleL < uiMATNbLignes; uiBoucleL++)
-		{					// (-1)^(i+j) avec i=uiBoucleL et j=1
+		{// Det = SOMME (   Matrice(i,j)					     * (-1)^(i+j)                     * det(SousMatrice(i,j))
 			dDeterminant += MATLireElement(uiBoucleL, uiBoucleC) * pow((-1), (uiBoucleL + 1) + 1) * (CCalculMatriciel<MType>::CMAExtraireSousMatrice(*this, uiBoucleL, uiBoucleC)).MATCalculDeterminant();
 		}
 	}

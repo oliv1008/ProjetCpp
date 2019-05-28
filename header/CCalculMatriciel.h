@@ -11,7 +11,7 @@ template <class MType> class CCalculMatriciel
 		static CMatrice<MType>& CMAAddition(CMatrice<MType> MATA, CMatrice<MType> MATB);
 		static CMatrice<MType>& CMASoustraction(CMatrice<MType> MATA, CMatrice<MType> MATB);
 		static CMatrice<MType>& CMAProduit(CMatrice<MType> MATA, CMatrice<MType> MATB);
-		static CMatrice<MType>& CMACalculMatriceCofacteurs(CMatrice<MType> MATMatrice);
+		static CMatrice<MType> CMACalculMatriceCofacteurs(CMatrice<MType> MATMatrice);
 		static CMatrice<MType> CMAExtraireSousMatrice(CMatrice<MType> MATA, unsigned int uiIndiceLigneMATA, unsigned int uiIndiceColonneMATA);
 
 };

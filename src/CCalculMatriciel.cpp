@@ -119,10 +119,21 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMAProduit(CMatrice<MType> MATA, CMatr
 	return *MATNouveau;
 }
 
+/***********************************************************************************
+**** Nom: CMACalculMatriceCofacteurs			                                ****
+************************************************************************************
+**** Calcule la matrice des cofacteurs			                                ****
+************************************************************************************
+**** Précondition: MATMatrice est une matrice carrée 						    ****
+**** Entrée: MATMatrice : CMatrice<MType>					                    ****
+**** Entraîne: Le calcul de la matrice des cofacteurs de MATMatrice				****
+**** Sortie: CMatrice<MType>													****
+***********************************************************************************/
 template <class MType>
-CMatrice<MType>& CCalculMatriciel<MType>::CMACalculMatriceCofacteurs(CMatrice<MType> MATMatrice)
+CMatrice<MType> CCalculMatriciel<MType>::CMACalculMatriceCofacteurs(CMatrice<MType> MATMatrice)
 {
-	unsigned int uiBoucleL = 0, uiBoucleC = 0;
+	unsigned int uiBoucleL = 0;
+	unsigned int uiBoucleC = 0;
 	
 	// Gestion exceptions (matrice non carrée)
 	if(MATMatrice.MATLireNbLignes() != MATMatrice.MATLireNbColonnes())
@@ -132,21 +143,31 @@ CMatrice<MType>& CCalculMatriciel<MType>::CMACalculMatriceCofacteurs(CMatrice<MT
 	}
 	
 	// Allocation d'une nouvelle matrice
-	CMatrice<MType> *MATNouveau = new CMatrice<MType>(MATMatrice.MATLireNbLignes(), MATMatrice.MATLireNbColonnes());
+	CMatrice<MType> MATNouveau(MATMatrice.MATLireNbLignes(), MATMatrice.MATLireNbColonnes());
 	
 	// Calcul des valeurs
-	for(uiBoucleL = 0; uiBoucleL < MATNouveau->MATLireNbLignes(); uiBoucleL++)
+	for(uiBoucleL = 0; uiBoucleL < MATNouveau.MATLireNbLignes(); uiBoucleL++)
 	{
-		for(uiBoucleC = 0; uiBoucleC < MATNouveau->MATLireNbColonnes(); uiBoucleC++)
+		for(uiBoucleC = 0; uiBoucleC < MATNouveau.MATLireNbColonnes(); uiBoucleC++)
 		{
 			// C(i,j) = (-1)^(i+j) * det(sousMatrice(i, j))
-			MATNouveau->MATModifierElement(uiBoucleL, uiBoucleC, pow((-1), uiBoucleL + uiBoucleC + 2) * CMAExtraireSousMatrice(MATMatrice, uiBoucleL, uiBoucleC).MATCalculDeterminant());
+			MATNouveau.MATModifierElement(uiBoucleL, uiBoucleC, pow((-1), uiBoucleL + uiBoucleC + 2) * CMAExtraireSousMatrice(MATMatrice, uiBoucleL, uiBoucleC).MATCalculDeterminant());
 		}
 	}
 	
-	return *MATNouveau;
+	return MATNouveau;
 }
 
+/***********************************************************************************
+**** Nom: CMAExtraireSousMatrice				                                ****
+************************************************************************************
+**** Extrait une sous-matrice en fonction d'une position		                ****
+************************************************************************************
+**** Précondition: indices incohérents (<= à la taille de MATA) 				****
+**** Entrée: MATA : CMatrice<MType>					                   		    ****
+**** Entraîne: Le calcul de la sous-matrice M(i,j)								****
+**** Sortie: CMatrice<MType>													****
+***********************************************************************************/
 template <class MType>
 CMatrice<MType> CCalculMatriciel<MType>::CMAExtraireSousMatrice(CMatrice<MType> MATA, unsigned int uiIndiceLigneMATA, unsigned int uiIndiceColonneMATA)
 {
